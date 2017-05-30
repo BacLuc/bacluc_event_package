@@ -66,6 +66,7 @@ class Controller extends Package
             }
             BlockType::installBlockType("bacluc_event_block", $pkg);
             BlockType::installBlockType("bacluc_next_event_block", $pkg);
+            BlockType::installBlockType("bacluc_event_participiants_block", $pkg);
             $em->getConnection()->commit();
         }catch(Exception $e){
             $em->getConnection()->rollBack();
