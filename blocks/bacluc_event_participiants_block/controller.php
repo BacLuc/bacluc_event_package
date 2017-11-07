@@ -1,4 +1,5 @@
 <?php
+
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucEventParticipiantsBlock;
 
 use Concrete\Core\User\Group\Group;
@@ -45,7 +46,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
      * Controller constructor.
      * @param null $obj
      */
-    function __construct($obj = null)
+    function __construct ($obj = null)
     {
         //$this->model has to be instantiated before, that session handling works right
 
@@ -53,48 +54,54 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
         parent::__construct($obj);
 
 
-
         if ($obj instanceof Block) {
-         $bt = $this->getEntityManager()->getRepository('\Concrete\Package\BasicTablePackage\Src\BasicTableInstance')->findOneBy(array('bID' => $obj->getBlockID()));
+            $bt = $this->getEntityManager()->getRepository('\Concrete\Package\BasicTablePackage\Src\BasicTableInstance')
+                       ->findOneBy(array( 'bID' => $obj->getBlockID() ))
+            ;
 
             $this->basicTableInstance = $bt;
         }
 
 
-/*
- * add blockoptions here if you wish
-        $this->requiredOptions = array(
-            new TextBlockOption(),
-            new DropdownBlockOption(),
-            new CanEditOption()
-        );
+        /*
+         * add blockoptions here if you wish
+                $this->requiredOptions = array(
+                    new TextBlockOption(),
+                    new DropdownBlockOption(),
+                    new CanEditOption()
+                );
 
-        $this->requiredOptions[0]->set('optionName', "Test");
-        $this->requiredOptions[1]->set('optionName', "TestDropDown");
-        $this->requiredOptions[1]->setPossibleValues(array(
-            "test",
-            "test2"
-        ));
+                $this->requiredOptions[0]->set('optionName', "Test");
+                $this->requiredOptions[1]->set('optionName', "TestDropDown");
+                $this->requiredOptions[1]->setPossibleValues(array(
+                    "test",
+                    "test2"
+                ));
 
-        $this->requiredOptions[2]->set('optionName', "testlink");
-*/
+                $this->requiredOptions[2]->set('optionName', "testlink");
+        */
 
         $this->fieldTypes = array(
-            'event' => new Field("event", "event", "event")
-            ,'total' => new IntegerField("total", "total", "total")
-            ,UserAttendsEvent::STATE_APOLOGIZED => new IntegerField(UserAttendsEvent::STATE_APOLOGIZED ,UserAttendsEvent::STATE_APOLOGIZED ,UserAttendsEvent::STATE_APOLOGIZED )
-            ,UserAttendsEvent::STATE_ATTENDING => new IntegerField(UserAttendsEvent::STATE_ATTENDING,UserAttendsEvent::STATE_ATTENDING,UserAttendsEvent::STATE_ATTENDING)
-            ,UserAttendsEvent::STATE_ATTENDED => new IntegerField(UserAttendsEvent::STATE_ATTENDED,UserAttendsEvent::STATE_ATTENDED,UserAttendsEvent::STATE_ATTENDED)
+            'event'                              => new Field("event", "event", "event")
+            , 'total'                            => new IntegerField("total", "total", "total")
+            , UserAttendsEvent::STATE_APOLOGIZED => new IntegerField(UserAttendsEvent::STATE_APOLOGIZED,
+                                                                     UserAttendsEvent::STATE_APOLOGIZED,
+                                                                     UserAttendsEvent::STATE_APOLOGIZED)
+            , UserAttendsEvent::STATE_ATTENDING  => new IntegerField(UserAttendsEvent::STATE_ATTENDING,
+                                                                     UserAttendsEvent::STATE_ATTENDING,
+                                                                     UserAttendsEvent::STATE_ATTENDING)
+            , UserAttendsEvent::STATE_ATTENDED   => new IntegerField(UserAttendsEvent::STATE_ATTENDED,
+                                                                     UserAttendsEvent::STATE_ATTENDED,
+                                                                     UserAttendsEvent::STATE_ATTENDED),
         );
 
     }
 
 
-
     /**
      * @return string
      */
-    public function getBlockTypeDescription()
+    public function getBlockTypeDescription ()
     {
         return t("Show participiants of event");
     }
@@ -102,18 +109,20 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     /**
      * @return string
      */
-    public function getBlockTypeName()
+    public function getBlockTypeName ()
     {
         return t("BaclucParticipiantsBlock");
     }
 
-    public function getTableControlButtons($view){
+    public function getTableControlButtons ($view)
+    {
         return '
         <div class="tablecontrols">
     
                         
                          <a href="' . $view->action('exportCSV') . '" >
-                            <button type="button" value=""  class="btn inlinebtn actionbutton exportcsv" aria-label="' . t("export CSV") . '" title="' . t("export CSV") . '">
+                            <button type="button" value=""  class="btn inlinebtn actionbutton exportcsv" aria-label="'
+               . t("export CSV") . '" title="' . t("export CSV") . '">
                                     <i class ="fa fa-download" aria-hidden="true"> </i>
                             </button>
                         </a>
@@ -125,7 +134,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
         ';
     }
 
-    function getActions($object, $row = array())
+    function getActions ($object, $row = array())
     {
         //".$object->action('edit_row_form')."
         $string = "
@@ -133,7 +142,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     	<form method='post' action='" . $object->action('edit_row_form') . "'>
     		<input type='hidden' name='rowid' value='" . $row['id'] . "'/>
     		<input type='hidden' name='action' value='edit' id='action_" . $row['id'] . "'>";
-            $string.=$this->getDetailActionIcon($row);
+        $string .= $this->getDetailActionIcon($row);
 
 
         $string .= "</form>
@@ -141,22 +150,22 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
         return $string;
     }
 
-    function getDetailActionIcon($row)
+    function getDetailActionIcon ($row)
     {
-        return static::getActionButton($row,"detail", "btn inlinebtn actionbutton list", "list","fa fa-list");
+        return static::getActionButton($row, "detail", "btn inlinebtn actionbutton list", "list", "fa fa-list");
     }
 
-    function action_edit_row_form()
-    {
-        //empty because nothing should happen
-    }
-
-    function action_save_row($redirectOnSuccess = true)
+    function action_edit_row_form ()
     {
         //empty because nothing should happen
     }
 
-    function action_add_new_row_form()
+    function action_save_row ($redirectOnSuccess = true)
+    {
+        //empty because nothing should happen
+    }
+
+    function action_add_new_row_form ()
     {
         //empty because nothing should happen
     }
@@ -165,7 +174,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
      * funciton to retrieve the table data
      * @return array
      */
-    public function displayTable()
+    public function displayTable ()
     {
         $query = BaseEntityRepository::getBuildQueryWithJoinedAssociations(UserAttendsEvent::class);
 
@@ -177,54 +186,55 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
 
         $qb = \Concrete\Package\BasicTablePackage\Controller::getEntityManagerStatic()->createQueryBuilder();
         $qb
-            ->select( 'Event.id as eventid, g.gID as groupid')
+            ->select('Event.id as eventid, g.gID as groupid')
             ->from('Concrete\Package\BaclucEventPackage\Src\Event', 'Event')
-            ->join('Event.EventGroups','eg')
-            ->join('eg.Group','g');
+            ->join('Event.EventGroups', 'eg')
+            ->join('eg.Group', 'g')
+        ;
 
         $event_groups = $qb->getQuery()->getResult();
 
         $uniqueStringFunction = Event::getDefaultGetDisplayStringFunction();
 
-        foreach ($events as $event){
+        foreach ($events as $event) {
             /**
              * @var Event $event
              */
             //first get Users which are allowed to attend event
-            $attendedMap[$event->getId()]=array(
+            $attendedMap[$event->getId()] = array(
                 'uniqueString' => $uniqueStringFunction($event)
-                ,'users'=>array()
+                , 'users'      => array(),
             );
 
         }
 
         $result = array();
 
-        foreach($event_groups as $row){
+        foreach ($event_groups as $row) {
             $group = Group::getByID($row['groupid']);
             $users = $group->getGroupMemberIDs();
-            $result[$row['eventid']]=array(
-                'event' => $attendedMap[$row['eventid']]['uniqueString']
-                ,'total' => count($users)
-            , UserAttendsEvent::STATE_APOLOGIZED => 0
-            , UserAttendsEvent::STATE_ATTENDING => 0
-            , UserAttendsEvent::STATE_ATTENDED => 0
+            $result[$row['eventid']] = array(
+                'event'                              => $attendedMap[$row['eventid']]['uniqueString']
+                , 'total'                            => count($users)
+                , UserAttendsEvent::STATE_APOLOGIZED => 0
+                , UserAttendsEvent::STATE_ATTENDING  => 0
+                , UserAttendsEvent::STATE_ATTENDED   => 0,
             );
         }
 
-        foreach ($userAttendsEvents as $userAttendsEvent){
+        foreach ($userAttendsEvents as $userAttendsEvent) {
             /**
              * @var UserAttendsEvent $userAttendsEvent
              */
-            switch ($userAttendsEvent->get("state")){
+            switch ($userAttendsEvent->get("state")) {
                 case UserAttendsEvent::STATE_ATTENDED:
-                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDED]++;
+                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDED] ++;
                     break;
                 case UserAttendsEvent::STATE_ATTENDING:
-                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDING]++;
+                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDING] ++;
                     break;
                 case UserAttendsEvent::STATE_APOLOGIZED:
-                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_APOLOGIZED]++;
+                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_APOLOGIZED] ++;
                     break;
             }
         }
@@ -236,7 +246,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     /**
      * @return array of Application\Block\BasicTableBlock\Field
      */
-    public function getFields()
+    public function getFields ()
     {
         return $this->fieldTypes;
     }

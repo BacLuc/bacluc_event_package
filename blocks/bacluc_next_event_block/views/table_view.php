@@ -1,6 +1,7 @@
-<?php 
-use Application\Block\BasicTableBlock\FieldTypes\SelfSaveInterface;
+<?php
+
 use Application\Block\BasicTableBlock\FieldTypes\FileField;
+use Application\Block\BasicTableBlock\FieldTypes\SelfSaveInterface;
 use Concrete\Package\BasicTablePackage\Src\FieldTypes\Field;
 
 if($event != null) {

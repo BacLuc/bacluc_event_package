@@ -1,16 +1,16 @@
 <?php
 namespace Concrete\Package\BaclucEventPackage;
 defined('C5_EXECUTE') or die(_("Access Denied."));
+
+use BlockTypeSet;
 use Concrete\Core\Block\BlockType\BlockType;
 use Concrete\Core\Package\Package;
-use Concrete\Core\Foundation\ClassLoader;
+use Core;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Punic\Exception;
-use Loader;
-use Core;
-use BlockTypeSet;
+
 class Controller extends Package
 {
     protected $pkgHandle = 'bacluc_event_package';

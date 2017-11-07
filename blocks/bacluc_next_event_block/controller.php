@@ -1,33 +1,16 @@
 <?php
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucNextEventBlock;
 
-use Concrete\Core\Form\Service\Widget\DateTime;
 use Concrete\Core\Http\Request;
-use Concrete\Core\Package\Package;
 use Concrete\Core\User\Group\Group;
-use Concrete\Core\User\UserInfo;
 use Concrete\Package\BaclucEventPackage\Src\Event;
 use Concrete\Package\BaclucEventPackage\Src\UserAttendsEvent;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\DropdownBlockOption;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\TableBlockOption;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\GroupRefOption as GroupRefOption;
-use Concrete\Core\Block\BlockController;
-use Concrete\Package\BasicTablePackage\Src\BasicTableInstance;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\TextBlockOption;
-use Concrete\Package\BasicTablePackage\Src\BaseEntity;
-use Concrete\Package\BasicTablePackage\Src\ExampleBaseEntity;
-use Core;
 use Concrete\Package\BasicTablePackage\Src\BlockOptions\CanEditOption;
+use Concrete\Package\BasicTablePackage\Src\BlockOptions\GroupRefOption as GroupRefOption;
+use Concrete\Package\BasicTablePackage\Src\ExampleBaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Schema\Table;
-use OAuth\Common\Exception\Exception;
-use Page;
 use User;
-use Concrete\Package\BasicTablePackage\Src\FieldTypes\Field as Field;
-use Concrete\Package\BasicTablePackage\Src\FieldTypes\SelfSaveInterface as SelfSaveInterface;
-use Loader;
 
-use Concrete\Package\BasicTablePackage\Block\BasicTableBlockPackaged\Test as Test;
 //test
 class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlockPackaged\Controller
 {

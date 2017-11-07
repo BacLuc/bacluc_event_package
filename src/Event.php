@@ -7,29 +7,23 @@
  */
 namespace Concrete\Package\BaclucEventPackage\Src;
 use Concrete\Core\Form\Service\Widget\DateTime;
-use Concrete\Package\BaclucEventPackage\Block\BaclucNextEventBlock\Controller;
+use Concrete\Package\BaclucPersonPackage\Src\PostalAddress;
 use Concrete\Package\BasicTablePackage\Src\BaseEntity;
+use Concrete\Package\BasicTablePackage\Src\DiscriminatorEntry\DiscriminatorEntry;
 use Concrete\Package\BasicTablePackage\Src\EntityGetterSetter;
 use Concrete\Package\BasicTablePackage\Src\FieldTypes\DateField as DateField;
 use Concrete\Package\BasicTablePackage\Src\FieldTypes\DirectEditAssociatedEntityField;
+use Concrete\Package\BasicTablePackage\Src\FieldTypes\DropdownLinkField;
 use Concrete\Package\BasicTablePackage\Src\FieldTypes\FileField as FileField;
 use Concrete\Package\BasicTablePackage\Src\FieldTypes\WysiwygField as WysiwygField;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Expr\Expression;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query\Expr;
-use Concrete\Package\BasicTablePackage\Src\FieldTypes\DropdownLinkField;
-use Concrete\Package\BaclucPersonPackage\Src\Address;
-use Concrete\Package\BaclucPersonPackage\Src\PostalAddress;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\InheritanceType;
 
 
 /*because of the hack with @DiscriminatorEntry Annotation, all Doctrine Annotations need to be
 properly imported*/
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\InheritanceType;
-use Doctrine\ORM\Mapping\DiscriminatorColumn;
-use Concrete\Package\BasicTablePackage\Src\DiscriminatorEntry\DiscriminatorEntry;
-use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class Event
