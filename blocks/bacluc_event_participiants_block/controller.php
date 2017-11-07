@@ -1,32 +1,14 @@
 <?php
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucEventParticipiantsBlock;
 
-use Concrete\Core\Package\Package;
 use Concrete\Core\User\Group\Group;
 use Concrete\Package\BaclucEventPackage\Src\Event;
 use Concrete\Package\BaclucEventPackage\Src\UserAttendsEvent;
 use Concrete\Package\BasicTablePackage\Src\BaseEntityRepository;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\DropdownBlockOption;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\TableBlockOption;
-use Concrete\Core\Block\BlockController;
-use Concrete\Package\BasicTablePackage\Src\BasicTableInstance;
-use Concrete\Package\BasicTablePackage\Src\BlockOptions\TextBlockOption;
-use Concrete\Package\BasicTablePackage\Src\BaseEntity;
-use Concrete\Package\BasicTablePackage\Src\EntityGetterSetter;
-use Concrete\Package\BasicTablePackage\Src\ExampleBaseEntity;
-use Concrete\Package\BasicTablePackage\Src\FieldTypes\IntegerField;
-use Core;
 use Concrete\Package\BasicTablePackage\Src\BlockOptions\CanEditOption;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\ORM\EntityRepository;
-use OAuth\Common\Exception\Exception;
-use Page;
-use User;
+use Concrete\Package\BasicTablePackage\Src\ExampleBaseEntity;
 use Concrete\Package\BasicTablePackage\Src\FieldTypes\Field as Field;
-use Concrete\Package\BasicTablePackage\Src\FieldTypes\SelfSaveInterface as SelfSaveInterface;
-use Loader;
-
-use Concrete\Package\BasicTablePackage\Block\BasicTableBlockPackaged\Test as Test;
+use Concrete\Package\BasicTablePackage\Src\FieldTypes\IntegerField;
 
 class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlockPackaged\Controller
 {
@@ -260,6 +242,3 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     }
 
 }
-
-
-
