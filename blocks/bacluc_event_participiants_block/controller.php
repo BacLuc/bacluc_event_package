@@ -3,6 +3,7 @@
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucEventParticipiantsBlock;
 
 use Concrete\Core\User\Group\Group;
+use Concrete\Core\User\User;
 use Concrete\Package\BaclucEventPackage\Src\Event;
 use Concrete\Package\BaclucEventPackage\Src\UserAttendsEvent;
 use Concrete\Package\BasicTablePackage\Src\BaseEntityRepository;
@@ -40,13 +41,14 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
 
 
     protected $fieldTypes = array();
+    private   $showDetailView;
 
     /**
      *
      * Controller constructor.
      * @param null $obj
      */
-    function __construct ($obj = null)
+    function __construct($obj = null)
     {
         //$this->model has to be instantiated before, that session handling works right
 
@@ -56,7 +58,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
 
         if ($obj instanceof Block) {
             $bt = $this->getEntityManager()->getRepository('\Concrete\Package\BasicTablePackage\Src\BasicTableInstance')
-                       ->findOneBy(array( 'bID' => $obj->getBlockID() ))
+                       ->findOneBy(array('bID' => $obj->getBlockID()))
             ;
 
             $this->basicTableInstance = $bt;
@@ -82,17 +84,18 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
         */
 
         $this->fieldTypes = array(
-            'event'                              => new Field("event", "event", "event")
-            , 'total'                            => new IntegerField("total", "total", "total")
-            , UserAttendsEvent::STATE_APOLOGIZED => new IntegerField(UserAttendsEvent::STATE_APOLOGIZED,
-                                                                     UserAttendsEvent::STATE_APOLOGIZED,
-                                                                     UserAttendsEvent::STATE_APOLOGIZED)
-            , UserAttendsEvent::STATE_ATTENDING  => new IntegerField(UserAttendsEvent::STATE_ATTENDING,
-                                                                     UserAttendsEvent::STATE_ATTENDING,
-                                                                     UserAttendsEvent::STATE_ATTENDING)
-            , UserAttendsEvent::STATE_ATTENDED   => new IntegerField(UserAttendsEvent::STATE_ATTENDED,
-                                                                     UserAttendsEvent::STATE_ATTENDED,
-                                                                     UserAttendsEvent::STATE_ATTENDED),
+            'id'                               => new Field("id", "id", "id"),
+            'event'                            => new Field("event", "event", "event"),
+            'total'                            => new IntegerField("total", "total", "total"),
+            UserAttendsEvent::STATE_APOLOGIZED => new IntegerField(UserAttendsEvent::STATE_APOLOGIZED,
+                UserAttendsEvent::STATE_APOLOGIZED,
+                UserAttendsEvent::STATE_APOLOGIZED),
+            UserAttendsEvent::STATE_ATTENDING  => new IntegerField(UserAttendsEvent::STATE_ATTENDING,
+                UserAttendsEvent::STATE_ATTENDING,
+                UserAttendsEvent::STATE_ATTENDING),
+            UserAttendsEvent::STATE_ATTENDED   => new IntegerField(UserAttendsEvent::STATE_ATTENDED,
+                UserAttendsEvent::STATE_ATTENDED,
+                UserAttendsEvent::STATE_ATTENDED),
         );
 
     }
@@ -101,7 +104,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     /**
      * @return string
      */
-    public function getBlockTypeDescription ()
+    public function getBlockTypeDescription()
     {
         return t("Show participiants of event");
     }
@@ -109,12 +112,12 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     /**
      * @return string
      */
-    public function getBlockTypeName ()
+    public function getBlockTypeName()
     {
         return t("BaclucParticipiantsBlock");
     }
 
-    public function getTableControlButtons ($view)
+    public function getTableControlButtons($view)
     {
         return '
         <div class="tablecontrols">
@@ -134,7 +137,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
         ';
     }
 
-    function getActions ($object, $row = array())
+    function getActions($object, $row = array())
     {
         //".$object->action('edit_row_form')."
         $string = "
@@ -150,22 +153,43 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
         return $string;
     }
 
-    function getDetailActionIcon ($row)
+    function getDetailActionIcon($row)
     {
         return static::getActionButton($row, "detail", "btn inlinebtn actionbutton list", "list", "fa fa-list");
     }
 
-    function action_edit_row_form ()
+    /**
+     * action to open a form to edit/delete (manipulate) an existing row
+     */
+    function action_edit_row_form()
+    {
+        $u = new User();
+        if ($this->requiresRegistration()) {
+            if (!$u->isRegistered()) {
+                $this->redirect('/login');
+            }
+        }
+
+        //get the editkey
+        $this->editKey = $_POST['rowid'];
+        //save it in the session
+        $_SESSION[$this->getHTMLId() . "rowid"] = $this->editKey;
+
+        $row = $this->getRowValues();
+
+        if ($_POST['action'] == 'detail' && strlen($this->getDetailActionIcon($row)) > 0) {
+            $this->showDetail();
+        } else {
+            parent::action_add_new_row_form();
+        }
+    }
+
+    function action_save_row($redirectOnSuccess = true)
     {
         //empty because nothing should happen
     }
 
-    function action_save_row ($redirectOnSuccess = true)
-    {
-        //empty because nothing should happen
-    }
-
-    function action_add_new_row_form ()
+    function action_add_new_row_form()
     {
         //empty because nothing should happen
     }
@@ -174,7 +198,7 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
      * funciton to retrieve the table data
      * @return array
      */
-    public function displayTable ()
+    public function displayTable()
     {
         $query = BaseEntityRepository::getBuildQueryWithJoinedAssociations(UserAttendsEvent::class);
 
@@ -203,7 +227,8 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
             //first get Users which are allowed to attend event
             $attendedMap[$event->getId()] = array(
                 'uniqueString' => $uniqueStringFunction($event)
-                , 'users'      => array(),
+                ,
+                'users'        => array(),
             );
 
         }
@@ -214,11 +239,12 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
             $group = Group::getByID($row['groupid']);
             $users = $group->getGroupMemberIDs();
             $result[$row['eventid']] = array(
-                'event'                              => $attendedMap[$row['eventid']]['uniqueString']
-                , 'total'                            => count($users)
-                , UserAttendsEvent::STATE_APOLOGIZED => 0
-                , UserAttendsEvent::STATE_ATTENDING  => 0
-                , UserAttendsEvent::STATE_ATTENDED   => 0,
+                'id'                               => $event->getId(),
+                'event'                            => $attendedMap[$row['eventid']]['uniqueString'],
+                'total'                            => count($users),
+                UserAttendsEvent::STATE_APOLOGIZED => 0,
+                UserAttendsEvent::STATE_ATTENDING  => 0,
+                UserAttendsEvent::STATE_ATTENDED   => 0,
             );
         }
 
@@ -228,13 +254,13 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
              */
             switch ($userAttendsEvent->get("state")) {
                 case UserAttendsEvent::STATE_ATTENDED:
-                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDED] ++;
+                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDED]++;
                     break;
                 case UserAttendsEvent::STATE_ATTENDING:
-                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDING] ++;
+                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_ATTENDING]++;
                     break;
                 case UserAttendsEvent::STATE_APOLOGIZED:
-                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_APOLOGIZED] ++;
+                    $result[$userAttendsEvent->get("Event")->get("id")][UserAttendsEvent::STATE_APOLOGIZED]++;
                     break;
             }
         }
@@ -246,9 +272,24 @@ class Controller extends \Concrete\Package\BasicTablePackage\Block\BasicTableBlo
     /**
      * @return array of Application\Block\BasicTableBlock\Field
      */
-    public function getFields ()
+    public function getFields()
     {
         return $this->fieldTypes;
+    }
+
+    public function showDetail()
+    {
+        $this->showDetailView = true;
+        $this->setViewVar("test", array("testdata"));
+        $this->render("view");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShowDetailView()
+    {
+        return $this->showDetailView;
     }
 
 }
