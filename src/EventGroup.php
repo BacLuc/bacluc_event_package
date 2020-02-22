@@ -1,41 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lucius
- * Date: 26.07.16
- * Time: 08:21
- */
-
-namespace Concrete\Package\BaclucEventPackage\Src;
+namespace BaclucEventPackage;
 
 
-use Concrete\Package\BasicTablePackage\Src\AssociationBaseEntity;
-use Concrete\Package\BasicTablePackage\Src\EntityGetterSetter;
-use Concrete\Package\BasicTablePackage\Src\Group;
-use Doctrine\ORM\Mapping as ORM;
-
-/*because of the hack with @DiscriminatorEntry Annotation, all Doctrine Annotations need to be
-properly imported*/
+use BaclucC5Crud\Lib\GetterTrait;
+use BaclucC5Crud\Lib\SetterTrait;
+use Doctrine\Common\Annotations\Annotation\IgnoreAnnotation;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\InheritanceType;
-use Doctrine\ORM\Mapping\DiscriminatorColumn;
-use Concrete\Package\BasicTablePackage\Src\DiscriminatorEntry\DiscriminatorEntry;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class EventGroup
  * @IgnoreAnnotation("package")\n*  Concrete\Package\BaclucEventPackage\Src
  * @Entity
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="discr", type="string")
- *  * @DiscriminatorEntry(value="Concrete\Package\BaclucEventPackage\Src\EventGroup")
  * @Table(name="bacluc_event_group")
  */
-class EventGroup extends AssociationBaseEntity
+class EventGroup
 {
-    use EntityGetterSetter;
-    //dontchange
-    public static $staticEntityfilterfunction; //that you have a filter that is only for this entity
+    use SetterTrait, GetterTrait;
     /**
      * @var int
      * @Id @Column(type="integer")
@@ -46,25 +30,17 @@ class EventGroup extends AssociationBaseEntity
     /**
      *
      * @var Event
-     * @ManyToOne(targetEntity="Event", inversedBy="EventGroups")
+     * @ManyToOne(targetEntity="BaclucEventPackage\Event", inversedBy="eventGroups")
      * @JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $Event;
+    protected $event;
 
     /**
      *
      * @var Group
-     * @ManyToOne(targetEntity="Concrete\Package\BasicTablePackage\Src\Group")
+     * @ManyToOne(targetEntity="BaclucEventPackage\Group")
      * @JoinColumn(name="group_id", referencedColumnName="gID", onDelete="CASCADE")
      */
-    protected $Group;
-
-
-    public function __construct(){
-        parent::__construct();
-    }
-
-
-
+    protected $group;
 
 }
