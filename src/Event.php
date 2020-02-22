@@ -10,7 +10,9 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\Table;
 
 
@@ -53,8 +55,12 @@ class Event
     protected $description;
 
     /**
-     * @var EventGroup[]
-     * @OneToMany(targetEntity="BaclucEventPackage\EventGroup", mappedBy="event")
+     * @var Group[]
+     * @ManyToMany(targetEntity="BaclucEventPackage\Group")
+     * @JoinTable(name="events_groups",
+     *     joinColumns={@JoinColumn(name="event", referencedColumnName="id")},
+     *     inverseJoinColumns={@JoinColumn(name="group", referencedColumnName="gID")}
+     * )
      */
     protected $eventGroups;
 
