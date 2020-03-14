@@ -8,6 +8,7 @@
 
 namespace BaclucEventPackage;
 
+use BaclucC5Crud\Entity\WithUniqueStringRepresentation;
 use BaclucC5Crud\Lib\GetterTrait;
 use BaclucC5Crud\Lib\SetterTrait;
 use DateTime;
@@ -34,7 +35,7 @@ use Doctrine\ORM\Mapping\Table;
  * )
  *
  */
-class Group
+class Group implements WithUniqueStringRepresentation
 {
     use SetterTrait, GetterTrait;
 
@@ -156,6 +157,11 @@ class Group
      * @return string
      */
     public function __toString()
+    {
+        return $this->gName;
+    }
+
+    public function createUniqueString(): string
     {
         return $this->gName;
     }
