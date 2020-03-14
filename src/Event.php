@@ -58,8 +58,8 @@ class Event
      * @var Group[]
      * @ManyToMany(targetEntity="BaclucEventPackage\Group")
      * @JoinTable(name="events_groups",
-     *     joinColumns={@JoinColumn(name="event", referencedColumnName="id")},
-     *     inverseJoinColumns={@JoinColumn(name="group", referencedColumnName="gID")}
+     *     joinColumns={@JoinColumn(name="eventId", referencedColumnName="id")},
+     *     inverseJoinColumns={@JoinColumn(name="groupId", referencedColumnName="gID")}
      * )
      */
     protected $eventGroups;
