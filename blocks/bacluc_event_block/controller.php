@@ -85,8 +85,10 @@ class Controller extends BlockController
         $this->processAction($this->createCrudController()
                                   ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $this->bID, $blockId),
             $toDeleteId);
-        Redirect::page(Page::getCurrentPage())->send();
-        exit();
+        if ($this->blockViewRenderOverride == null) {
+            Redirect::page(Page::getCurrentPage())->send();
+            exit();
+        }
     }
 
     /**
