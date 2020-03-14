@@ -159,6 +159,4 @@ class Group
     {
         return $this->gName;
     }
-
-
 }
