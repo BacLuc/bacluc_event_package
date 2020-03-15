@@ -12,7 +12,6 @@ use function BaclucC5Crud\Lib\collect as collect;
 
 class ShowNextEvent implements ActionProcessor
 {
-    const DETAIL_VIEW = "view/detail";
     /**
      * @var TableViewService
      */
@@ -51,15 +50,17 @@ class ShowNextEvent implements ActionProcessor
 
         if (sizeof($tableView->getRows()) >= 1) {
             $detailEntry = collect($tableView->getRows())->first();
-            $headersAndValues = collect($tableView->getHeaders())->combine($detailEntry);
+            $eventfound = true;
         } else {
-            $headersAndValues = collect(array_flip($tableView->getHeaders()))
-                ->map(function () {
-                    return "";
-                })->toArray();
+            $eventfound = false;
         }
-        $this->variableSetter->set("properties", $headersAndValues);
-        $this->renderer->render(self::DETAIL_VIEW);
+        $this->variableSetter->set("eventfound", $eventfound);
+        if ($eventfound) {
+            foreach ($detailEntry as $key => $value) {
+                $this->variableSetter->set($key, $value);
+            }
+        }
+        $this->renderer->render("view/nextevent");
     }
 
 }
