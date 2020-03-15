@@ -2,11 +2,13 @@
 
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucNextEventBlock;
 
+use BaclucC5Crud\Adapters\Concrete5\Concrete5Renderer;
 use BaclucC5Crud\Adapters\Concrete5\DIContainerFactory;
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionRegistry;
 use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucC5Crud\Controller\CrudController;
+use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\Validation\ValidationResult;
 use BaclucC5Crud\Controller\Validation\ValidationResultItem;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
@@ -18,7 +20,10 @@ use BaclucEventPackage\NextEvent\NextEventRegistryFactory;
 use BaclucEventPackage\NextEvent\ShowNextEventEntrySupplier;
 use Concrete\Core\Block\BlockController;
 use Concrete\Core\Error\ErrorList\ErrorList;
+use Concrete\Core\Package\PackageService;
+use Concrete\Core\Support\Facade\Application;
 use Concrete\Package\BaclucC5Crud\Controller as PackageController;
+use Concrete\Package\BaclucEventPackage\Controller as EventPackageController;
 use DI\ContainerBuilder;
 use DI\DependencyException;
 use DI\NotFoundException;
@@ -26,6 +31,7 @@ use Exception;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
 use function DI\autowire;
+use function DI\create;
 use function DI\factory;
 use function DI\value;
 
@@ -41,7 +47,7 @@ class Controller extends BlockController
     public function view()
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(NextEventRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
+            ->getActionFor(NextEventRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
     }
 
     private function processAction(ActionProcessor $actionProcessor, ...$additionalParams)
@@ -72,8 +78,13 @@ class Controller extends BlockController
             $this->bID,
             FormType::$BLOCK_VIEW);
 
+        $app = Application::getFacadeApplication();
+        /** @var PackageController $packageController */
+        $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
         $containerBuilder = new ContainerBuilder();
         $definitions[BlockController::class] = value($this);
+        $definitions[Renderer::class] =
+            create(Concrete5Renderer::class)->constructor($this, $packageController->getPackagePath());
         $definitions[ActionRegistry::class] = factory(function (ContainerInterface $container) {
             return $container->get(NextEventRegistryFactory::class)->createActionRegistry();
         });
@@ -90,7 +101,7 @@ class Controller extends BlockController
     public function add()
     {
         $this->processAction($this->createConfigController()
-                                  ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID));
+            ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID));
     }
 
     /**
@@ -100,7 +111,7 @@ class Controller extends BlockController
     public function edit()
     {
         $this->processAction($this->createConfigController()
-                                  ->getActionFor(ActionRegistryFactory::EDIT_ROW_FORM, $this->bID),
+            ->getActionFor(ActionRegistryFactory::EDIT_ROW_FORM, $this->bID),
             $this->bID);
     }
 
@@ -115,8 +126,8 @@ class Controller extends BlockController
 
         /** @var $validationResult ValidationResult */
         $validationResult = $this->processAction($this->createConfigController()
-                                                      ->getActionFor(ActionRegistryFactory::VALIDATE_FORM,
-                                                          $this->bID),
+            ->getActionFor(ActionRegistryFactory::VALIDATE_FORM,
+                $this->bID),
             $this->bID);
         /** @var $e ErrorList */
         $e = $this->app->make(ErrorList::class);
@@ -140,7 +151,7 @@ class Controller extends BlockController
     {
         parent::save($args);
         $this->processAction($this->createConfigController()
-                                  ->getActionFor(ActionRegistryFactory::POST_FORM, $this->bID),
+            ->getActionFor(ActionRegistryFactory::POST_FORM, $this->bID),
             $this->bID);
     }
 
@@ -152,7 +163,7 @@ class Controller extends BlockController
     {
         parent::delete();
         $this->processAction($this->createConfigController()
-                                  ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $this->bID),
+            ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $this->bID),
             $this->bID);
     }
 
@@ -167,12 +178,17 @@ class Controller extends BlockController
         $entityManager = PackageController::getEntityManagerStatic();
         $entityClass = NextEventConfiguration::class;
 
+        $app = Application::getFacadeApplication();
+        /** @var PackageController $packageController */
+        $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
+
         $container = DIContainerFactory::createContainer($this,
             $entityManager,
             $entityClass,
             "",
             (new EntityFieldOverrideBuilder($entityClass))->build(),
             $this->bID,
+            $packageController->getPackagePath(),
             FormType::$BLOCK_CONFIGURATION);
         return $container->get(CrudController::class);
     }

@@ -9,9 +9,12 @@ use BaclucC5Crud\FieldConfigurationOverride\EntityFieldOverrideBuilder;
 use BaclucC5Crud\View\FormType;
 use BaclucEventPackage\Event;
 use Concrete\Core\Block\BlockController;
+use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Routing\Redirect;
+use Concrete\Core\Support\Facade\Application;
 use Concrete\Package\BaclucC5Crud\Controller as PackageController;
+use Concrete\Package\BaclucEventPackage\Controller as EventPackageController;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Exception;
@@ -134,12 +137,17 @@ class Controller extends BlockController
         $entityClass = Event::class;
         $entityFieldOverrides = new EntityFieldOverrideBuilder($entityClass);
 
+        $app = Application::getFacadeApplication();
+        /** @var PackageController $packageController */
+        $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
+
         $container = DIContainerFactory::createContainer($this,
             $entityManager,
             $entityClass,
             "",
             $entityFieldOverrides->build(),
             $this->bID,
+            $packageController->getPackagePath(),
             FormType::$BLOCK_VIEW);
         return $container->get(CrudController::class);
     }
