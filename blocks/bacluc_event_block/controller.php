@@ -137,6 +137,7 @@ class Controller extends BlockController
         $container = DIContainerFactory::createContainer($this,
             $entityManager,
             $entityClass,
+            "",
             $entityFieldOverrides->build(),
             $this->bID,
             FormType::$BLOCK_VIEW);

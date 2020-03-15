@@ -5,14 +5,19 @@ namespace Concrete\Package\BaclucEventPackage\Block\BaclucNextEventBlock;
 use BaclucC5Crud\Adapters\Concrete5\DIContainerFactory;
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionRegistry;
+use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucC5Crud\Controller\CrudController;
+use BaclucC5Crud\Controller\Validation\ValidationResult;
+use BaclucC5Crud\Controller\Validation\ValidationResultItem;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
 use BaclucC5Crud\FieldConfigurationOverride\EntityFieldOverrideBuilder;
 use BaclucC5Crud\View\FormType;
 use BaclucEventPackage\Event;
+use BaclucEventPackage\NextEvent\NextEventConfiguration;
 use BaclucEventPackage\NextEvent\NextEventRegistryFactory;
 use BaclucEventPackage\NextEvent\ShowNextEventEntrySupplier;
 use Concrete\Core\Block\BlockController;
+use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Package\BaclucC5Crud\Controller as PackageController;
 use DI\ContainerBuilder;
 use DI\DependencyException;
@@ -62,6 +67,7 @@ class Controller extends BlockController
         $definitions = DIContainerFactory::createDefinition(
             $entityManager,
             $entityClass,
+            NextEventConfiguration::class,
             $entityFieldOverrides->build(),
             $this->bID,
             FormType::$BLOCK_VIEW);
@@ -74,6 +80,100 @@ class Controller extends BlockController
         $definitions[TableViewEntrySupplier::class] = autowire(ShowNextEventEntrySupplier::class);
         $containerBuilder->addDefinitions($definitions);
         $container = $containerBuilder->build();
+        return $container->get(CrudController::class);
+    }
+
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function add()
+    {
+        $this->processAction($this->createConfigController()
+                                  ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID));
+    }
+
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function edit()
+    {
+        $this->processAction($this->createConfigController()
+                                  ->getActionFor(ActionRegistryFactory::EDIT_ROW_FORM, $this->bID),
+            $this->bID);
+    }
+
+    /**
+     * @param array|string|null $args
+     * @return bool|ErrorList|void
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function validate($args)
+    {
+
+        /** @var $validationResult ValidationResult */
+        $validationResult = $this->processAction($this->createConfigController()
+                                                      ->getActionFor(ActionRegistryFactory::VALIDATE_FORM,
+                                                          $this->bID),
+            $this->bID);
+        /** @var $e ErrorList */
+        $e = $this->app->make(ErrorList::class);
+        foreach ($validationResult as $validationResultItem) {
+            /** @var $validationResultItem ValidationResultItem */
+            foreach ($validationResultItem->getMessages() as $message) {
+                $e->add($validationResultItem->getName() . ": " . $message,
+                    $validationResultItem->getName(),
+                    $validationResultItem->getName());
+            }
+        }
+        return $e;
+    }
+
+    /**
+     * @param array $args
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function save($args)
+    {
+        parent::save($args);
+        $this->processAction($this->createConfigController()
+                                  ->getActionFor(ActionRegistryFactory::POST_FORM, $this->bID),
+            $this->bID);
+    }
+
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function delete()
+    {
+        parent::delete();
+        $this->processAction($this->createConfigController()
+                                  ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $this->bID),
+            $this->bID);
+    }
+
+    /**
+     * @return CrudController
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws Exception
+     */
+    private function createConfigController(): CrudController
+    {
+        $entityManager = PackageController::getEntityManagerStatic();
+        $entityClass = NextEventConfiguration::class;
+
+        $container = DIContainerFactory::createContainer($this,
+            $entityManager,
+            $entityClass,
+            "",
+            (new EntityFieldOverrideBuilder($entityClass))->build(),
+            $this->bID,
+            FormType::$BLOCK_CONFIGURATION);
         return $container->get(CrudController::class);
     }
 
