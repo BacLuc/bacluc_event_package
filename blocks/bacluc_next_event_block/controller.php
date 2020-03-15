@@ -36,7 +36,7 @@ class Controller extends BlockController
     public function view()
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(NextEventRegistryFactory::SHOW_NEXT_EVENT, $this->bID, $this->bID));
+                                  ->getActionFor(NextEventRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
     }
 
     private function processAction(ActionProcessor $actionProcessor, ...$additionalParams)
@@ -63,6 +63,7 @@ class Controller extends BlockController
             $entityManager,
             $entityClass,
             $entityFieldOverrides->build(),
+            $this->bID,
             FormType::$BLOCK_VIEW);
 
         $containerBuilder = new ContainerBuilder();

@@ -29,7 +29,7 @@ class Controller extends BlockController
     public function view()
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::SHOW_TABLE, $this->bID, $this->bID));
+                                  ->getActionFor(ActionRegistryFactory::SHOW_TABLE, $this->bID));
     }
 
     /**
@@ -40,7 +40,7 @@ class Controller extends BlockController
     public function action_add_new_row_form($blockId)
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID, $blockId));
+                                  ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $blockId));
     }
 
     /**
@@ -51,7 +51,7 @@ class Controller extends BlockController
     public function action_edit_row_form($blockId, $editId)
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::EDIT_ROW_FORM, $this->bID, $blockId),
+                                  ->getActionFor(ActionRegistryFactory::EDIT_ROW_FORM, $blockId),
             $editId);
     }
 
@@ -65,7 +65,7 @@ class Controller extends BlockController
     public function action_post_form($blockId, $editId = null)
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::POST_FORM, $this->bID, $blockId),
+                                  ->getActionFor(ActionRegistryFactory::POST_FORM, $blockId),
             $editId);
         if ($this->blockViewRenderOverride == null) {
             Redirect::page(Page::getCurrentPage())->send();
@@ -83,7 +83,7 @@ class Controller extends BlockController
     public function action_delete_entry($blockId, $toDeleteId)
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $this->bID, $blockId),
+                                  ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $blockId),
             $toDeleteId);
         if ($this->blockViewRenderOverride == null) {
             Redirect::page(Page::getCurrentPage())->send();
@@ -98,7 +98,7 @@ class Controller extends BlockController
     public function action_cancel_form($blockId)
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::SHOW_TABLE, $this->bID, $blockId));
+                                  ->getActionFor(ActionRegistryFactory::SHOW_TABLE, $blockId));
     }
 
     /**
@@ -110,7 +110,7 @@ class Controller extends BlockController
     public function action_show_details($blockId, $toShowId)
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(ActionRegistryFactory::SHOW_ENTRY_DETAILS, $this->bID, $blockId),
+                                  ->getActionFor(ActionRegistryFactory::SHOW_ENTRY_DETAILS, $blockId),
             $toShowId);
     }
 
@@ -138,6 +138,7 @@ class Controller extends BlockController
             $entityManager,
             $entityClass,
             $entityFieldOverrides->build(),
+            $this->bID,
             FormType::$BLOCK_VIEW);
         return $container->get(CrudController::class);
     }
