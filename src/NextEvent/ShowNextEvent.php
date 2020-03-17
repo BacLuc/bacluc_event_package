@@ -8,6 +8,7 @@ use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
 use BaclucC5Crud\TableViewService;
+use BaclucEventPackage\EventActionRegistryFactory;
 use function BaclucC5Crud\Lib\collect as collect;
 
 class ShowNextEvent implements ActionProcessor
@@ -41,7 +42,7 @@ class ShowNextEvent implements ActionProcessor
 
     function getName(): string
     {
-        return NextEventRegistryFactory::SHOW_NEXT_EVENT;
+        return EventActionRegistryFactory::SHOW_NEXT_EVENT;
     }
 
     function process(array $get, array $post, ...$additionalParameters)

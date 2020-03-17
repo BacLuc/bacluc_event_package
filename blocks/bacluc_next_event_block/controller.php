@@ -15,8 +15,8 @@ use BaclucC5Crud\Entity\TableViewEntrySupplier;
 use BaclucC5Crud\FieldConfigurationOverride\EntityFieldOverrideBuilder;
 use BaclucC5Crud\View\FormType;
 use BaclucEventPackage\Event;
+use BaclucEventPackage\EventActionRegistryFactory;
 use BaclucEventPackage\NextEvent\NextEventConfiguration;
-use BaclucEventPackage\NextEvent\NextEventRegistryFactory;
 use BaclucEventPackage\NextEvent\ShowNextEventEntrySupplier;
 use Concrete\Core\Block\BlockController;
 use Concrete\Core\Error\ErrorList\ErrorList;
@@ -47,7 +47,7 @@ class Controller extends BlockController
     public function view()
     {
         $this->processAction($this->createCrudController()
-            ->getActionFor(NextEventRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
+                                  ->getActionFor(EventActionRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
     }
 
     private function processAction(ActionProcessor $actionProcessor, ...$additionalParams)
@@ -86,7 +86,7 @@ class Controller extends BlockController
         $definitions[Renderer::class] =
             create(Concrete5Renderer::class)->constructor($this, $packageController->getPackagePath());
         $definitions[ActionRegistry::class] = factory(function (ContainerInterface $container) {
-            return $container->get(NextEventRegistryFactory::class)->createActionRegistry();
+            return $container->get(EventActionRegistryFactory::class)->createActionRegistry();
         });
         $definitions[TableViewEntrySupplier::class] = autowire(ShowNextEventEntrySupplier::class);
         $containerBuilder->addDefinitions($definitions);

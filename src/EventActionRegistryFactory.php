@@ -1,14 +1,15 @@
 <?php
 
 
-namespace BaclucEventPackage\NextEvent;
+namespace BaclucEventPackage;
 
 
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionProcessors\ShowTable;
 use BaclucC5Crud\Controller\ActionRegistry;
+use BaclucEventPackage\NextEvent\ShowNextEvent;
 
-class NextEventRegistryFactory
+class EventActionRegistryFactory
 {
     const SHOW_NEXT_EVENT = "show_next_event";
 
