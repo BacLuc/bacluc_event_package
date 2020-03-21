@@ -11,7 +11,8 @@ use BaclucEventPackage\NextEvent\ShowNextEvent;
 
 class EventActionRegistryFactory
 {
-    const SHOW_NEXT_EVENT = "show_next_event";
+    const SHOW_NEXT_EVENT        = "show_next_event";
+    const SHOW_CANCEL_EVENT_FORM = "show_cancel_event_form";
 
     /**
      * @var ActionProcessor[]
@@ -20,7 +21,8 @@ class EventActionRegistryFactory
 
     public function __construct(
         ShowNextEvent $showLastEvent,
-        ShowTable $showTable
+        ShowTable $showTable,
+        ShowCancelEventForm $showCancelEventForm
     ) {
         $this->actions = func_get_args();
     }

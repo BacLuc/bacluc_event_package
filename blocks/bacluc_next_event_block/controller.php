@@ -14,10 +14,12 @@ use BaclucC5Crud\Controller\Validation\ValidationResultItem;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
 use BaclucC5Crud\FieldConfigurationOverride\EntityFieldOverrideBuilder;
 use BaclucC5Crud\View\FormType;
+use BaclucC5Crud\View\ViewActionRegistry;
 use BaclucEventPackage\Event;
 use BaclucEventPackage\EventActionRegistryFactory;
 use BaclucEventPackage\NextEvent\NextEventConfiguration;
 use BaclucEventPackage\NextEvent\ShowNextEventEntrySupplier;
+use BaclucEventPackage\NextEvent\ViewActionRegistryFactory;
 use Concrete\Core\Block\BlockController;
 use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Package\PackageService;
@@ -48,6 +50,20 @@ class Controller extends BlockController
     {
         $this->processAction($this->createCrudController()
                                   ->getActionFor(EventActionRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
+    }
+
+    /**
+     * @param $blockId
+     * @param $editId
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws ReflectionException
+     */
+    public function action_show_cancel_event_form($blockId, $editId)
+    {
+        $this->processAction($this->createCrudController()
+                                  ->getActionFor(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM, $blockId),
+            $editId);
     }
 
     private function processAction(ActionProcessor $actionProcessor, ...$additionalParams)
@@ -88,6 +104,7 @@ class Controller extends BlockController
         $definitions[ActionRegistry::class] = factory(function (ContainerInterface $container) {
             return $container->get(EventActionRegistryFactory::class)->createActionRegistry();
         });
+        $definitions[ViewActionRegistry::class] = factory([ViewActionRegistryFactory::class, "createActionRegistry"]);
         $definitions[TableViewEntrySupplier::class] = autowire(ShowNextEventEntrySupplier::class);
         $containerBuilder->addDefinitions($definitions);
         $container = $containerBuilder->build();
