@@ -22,7 +22,8 @@ class EventActionRegistryFactory
     public function __construct(
         ShowNextEvent $showLastEvent,
         ShowTable $showTable,
-        ShowCancelEventForm $showCancelEventForm
+        ShowCancelEventForm $showCancelEventForm,
+        PostCancelEventForm $postCancelEventForm
     ) {
         $this->actions = func_get_args();
     }

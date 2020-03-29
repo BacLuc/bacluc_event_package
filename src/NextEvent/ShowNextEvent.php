@@ -4,15 +4,15 @@
 namespace BaclucEventPackage\NextEvent;
 
 
-use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
 use BaclucC5Crud\TableViewService;
 use BaclucC5Crud\View\ViewActionRegistry;
 use BaclucEventPackage\EventActionRegistryFactory;
+use BaclucEventPackage\NoEditIdFallbackActionProcessor;
 use function BaclucC5Crud\Lib\collect as collect;
 
-class ShowNextEvent implements ActionProcessor
+class ShowNextEvent implements NoEditIdFallbackActionProcessor
 {
     /**
      * @var TableViewService
