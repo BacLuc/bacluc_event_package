@@ -18,6 +18,7 @@ use BaclucC5Crud\FieldConfigurationOverride\EntityFieldOverrideBuilder;
 use BaclucC5Crud\View\FormType;
 use BaclucC5Crud\View\FormView\DontShowFormField;
 use BaclucC5Crud\View\FormView\Field as FormField;
+use BaclucC5Crud\View\SubmitFormViewAction;
 use BaclucC5Crud\View\ViewActionRegistry;
 use BaclucEventPackage\Event;
 use BaclucEventPackage\EventActionRegistryFactory;
@@ -141,10 +142,10 @@ class Controller extends BlockController
      * @throws NotFoundException
      * @throws ReflectionException
      */
-    public function action_post_form($blockId, $editId)
+    public function action_post_cancel_event_form($blockId, $editId)
     {
         $this->processAction($this->createEventCancellationController()
-                                  ->getActionFor(ActionRegistryFactory::POST_FORM, $blockId),
+                                  ->getActionFor(EventActionRegistryFactory::POST_CANCEL_EVENT_FORM, $blockId),
             $editId);
         if ($this->blockViewRenderOverride == null) {
             Redirect::page(Page::getCurrentPage())->send();
@@ -193,6 +194,9 @@ class Controller extends BlockController
         });
         $definitions[ViewActionRegistry::class] = factory([ViewActionRegistryFactory::class, "createActionRegistry"]);
         $definitions[NoEditIdFallbackActionProcessor::class] = autowire(ShowNextEvent::class);
+        $definitions[SubmitFormViewAction::class] =
+            factory([ViewActionRegistry::class, "getByName"])->parameter("name",
+                EventActionRegistryFactory::POST_CANCEL_EVENT_FORM);
         $containerBuilder->addDefinitions($definitions);
         $container = $containerBuilder->build();
         return $container->get(CrudController::class);

@@ -5,7 +5,6 @@ namespace BaclucEventPackage;
 
 
 use BaclucC5Crud\Controller\ActionProcessor;
-use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\Validation\ValidationResultItem;
 use BaclucC5Crud\Controller\Validation\Validator;
@@ -14,6 +13,8 @@ use BaclucC5Crud\Controller\ValuePersisters\PersistorConfiguration;
 use BaclucC5Crud\Controller\VariableSetter;
 use BaclucC5Crud\Entity\Repository;
 use BaclucC5Crud\FormViewAfterValidationFailedService;
+use BaclucC5Crud\View\CancelFormViewAction;
+use BaclucC5Crud\View\SubmitFormViewAction;
 use function BaclucC5Crud\Lib\collect as collect;
 
 class PostCancelEventForm implements ActionProcessor
@@ -47,6 +48,14 @@ class PostCancelEventForm implements ActionProcessor
      * @var NoEditIdFallbackActionProcessor
      */
     private $noEditIdFallbackActionProcessor;
+    /**
+     * @var SubmitFormViewAction
+     */
+    private $submitFormAction;
+    /**
+     * @var CancelFormViewAction
+     */
+    private $cancelFormAction;
 
     /**
      * PostFormActionProcessor constructor.
@@ -57,6 +66,8 @@ class PostCancelEventForm implements ActionProcessor
      * @param VariableSetter $variableSetter
      * @param Renderer $renderer
      * @param NoEditIdFallbackActionProcessor $noEditIdFallbackActionProcessor
+     * @param SubmitFormViewAction $submitFormAction
+     * @param CancelFormViewAction $cancelFormAction
      */
     public function __construct(
         Validator $validator,
@@ -65,7 +76,9 @@ class PostCancelEventForm implements ActionProcessor
         PersistorConfiguration $peristorConfiguration,
         VariableSetter $variableSetter,
         Renderer $renderer,
-        NoEditIdFallbackActionProcessor $noEditIdFallbackActionProcessor
+        NoEditIdFallbackActionProcessor $noEditIdFallbackActionProcessor,
+        SubmitFormViewAction $submitFormAction,
+        CancelFormViewAction $cancelFormAction
     ) {
         $this->validator = $validator;
         $this->formViewAfterValidationFailedService = $formViewAfterValidationFailedService;
@@ -74,11 +87,13 @@ class PostCancelEventForm implements ActionProcessor
         $this->variableSetter = $variableSetter;
         $this->renderer = $renderer;
         $this->noEditIdFallbackActionProcessor = $noEditIdFallbackActionProcessor;
+        $this->submitFormAction = $submitFormAction;
+        $this->cancelFormAction = $cancelFormAction;
     }
 
     function getName(): string
     {
-        return ActionRegistryFactory::POST_FORM;
+        return EventActionRegistryFactory::POST_CANCEL_EVENT_FORM;
     }
 
     function process(array $get, array $post, ...$additionalParameters)
@@ -123,6 +138,8 @@ class PostCancelEventForm implements ActionProcessor
                 });
             $this->variableSetter->set("validationErrors", $validationErrors);
             $this->variableSetter->set("addFormTags", true);
+            $this->variableSetter->set("submitFormAction", $this->submitFormAction);
+            $this->variableSetter->set("cancelFormAction", $this->cancelFormAction);
             $this->renderer->render(self::FORM_VIEW);
         }
     }

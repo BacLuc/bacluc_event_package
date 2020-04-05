@@ -13,6 +13,7 @@ class EventActionRegistryFactory
 {
     const SHOW_NEXT_EVENT        = "show_next_event";
     const SHOW_CANCEL_EVENT_FORM = "show_cancel_event_form";
+    const POST_CANCEL_EVENT_FORM = "post_cancel_event_form";
 
     /**
      * @var ActionProcessor[]
