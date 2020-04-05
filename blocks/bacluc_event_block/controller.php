@@ -61,6 +61,16 @@ class Controller extends BlockController
      * @throws NotFoundException
      * @throws ReflectionException
      */
+    public function action_view()
+    {
+        $this->view();
+    }
+
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws ReflectionException
+     */
     public function action_add_new_row_form($blockId)
     {
         $this->processAction($this->createCrudController()

@@ -5,10 +5,12 @@ namespace BaclucEventPackage;
 
 
 use BaclucC5Crud\Controller\ActionProcessor;
+use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
 use BaclucC5Crud\TableViewService;
 use BaclucC5Crud\View\TableView\TableViewFieldConfiguration;
+use BaclucC5Crud\View\ViewActionRegistry;
 
 class ShowCancellations implements ActionProcessor
 {
@@ -33,19 +35,25 @@ class ShowCancellations implements ActionProcessor
      * @var CancellationsRepository
      */
     private $cancellationsRepository;
+    /**
+     * @var ViewActionRegistry
+     */
+    private $viewActionRegistry;
 
     public function __construct(
         VariableSetter $variableSetter,
         Renderer $renderer,
         NoEditIdFallbackActionProcessor $noEditIdFallbackActionProcessor,
         TableViewFieldConfiguration $tableViewFieldConfiguration,
-        CancellationsRepository $cancellationsRepository
+        CancellationsRepository $cancellationsRepository,
+        ViewActionRegistry $viewActionRegistry
     ) {
         $this->variableSetter = $variableSetter;
         $this->renderer = $renderer;
         $this->noEditIdFallbackActionProcessor = $noEditIdFallbackActionProcessor;
         $this->tableViewFieldConfiguration = $tableViewFieldConfiguration;
         $this->cancellationsRepository = $cancellationsRepository;
+        $this->viewActionRegistry = $viewActionRegistry;
     }
 
     function getName(): string
@@ -72,7 +80,8 @@ class ShowCancellations implements ActionProcessor
         $tableView = $tableViewService->getTableView();
         $this->variableSetter->set("headers", $tableView->getHeaders());
         $this->variableSetter->set("rows", $tableView->getRows());
-        $this->variableSetter->set("actions", []);
+        $this->variableSetter->set("actions",
+            [$this->viewActionRegistry->getByName(ActionRegistryFactory::BACK_TO_MAIN)]);
         $this->variableSetter->set("rowactions", []);
         $this->renderer->render(self::TABLE_VIEW);
     }
