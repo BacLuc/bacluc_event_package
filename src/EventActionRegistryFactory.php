@@ -5,8 +5,8 @@ namespace BaclucEventPackage;
 
 
 use BaclucC5Crud\Controller\ActionProcessor;
-use BaclucC5Crud\Controller\ActionProcessors\ShowTable;
 use BaclucC5Crud\Controller\ActionRegistry;
+use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucEventPackage\NextEvent\ShowNextEvent;
 
 class EventActionRegistryFactory
@@ -20,12 +20,16 @@ class EventActionRegistryFactory
     private $actions;
 
     public function __construct(
-        ShowNextEvent $showLastEvent,
-        ShowTable $showTable,
+        ActionRegistryFactory $actionRegistryFactory,
+        ShowNextEvent $showNextEvent,
         ShowCancelEventForm $showCancelEventForm,
         PostCancelEventForm $postCancelEventForm
     ) {
-        $this->actions = func_get_args();
+
+        $this->actions = $actionRegistryFactory->createActionRegistry()->getActions();
+        $this->actions[] = $showNextEvent;
+        $this->actions[] = $showCancelEventForm;
+        $this->actions[] = $postCancelEventForm;
     }
 
 
