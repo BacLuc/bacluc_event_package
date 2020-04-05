@@ -1,13 +1,12 @@
 <?php
 
 
-namespace BaclucEventPackage\NextEvent;
+namespace BaclucEventPackage;
 
 
 use BaclucC5Crud\View\ViewActionDefinition;
 use BaclucC5Crud\View\ViewActionRegistry;
 use BaclucC5Crud\View\ViewActionRegistryFactory as CrudViewActionRegistryFactory;
-use BaclucEventPackage\EventActionRegistryFactory;
 
 class ViewActionRegistryFactory
 {
@@ -38,6 +37,12 @@ class ViewActionRegistryFactory
                 "Save Cancellation",
                 "Save Cancellation",
                 "");
+        $existingActions[] =
+            new ViewActionDefinition(EventActionRegistryFactory::SHOW_CANCELLATIONS,
+                "show-cancellations",
+                "Show Cancellations",
+                "Show Cancellations",
+                "fa-list-ul");
         return new ViewActionRegistry($existingActions);
     }
 }
