@@ -150,7 +150,7 @@ class Controller extends BlockController
 
     private function processAction(ActionProcessor $actionProcessor, ...$additionalParams)
     {
-        return $actionProcessor->process($this->request->get(null) ?: [],
+        return $actionProcessor->process($this->request->query->all() ?: [],
             $this->request->post(null) ?: [],
             array_key_exists(0, $additionalParams) ? $additionalParams[0] : null);
     }

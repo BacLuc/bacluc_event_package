@@ -4,6 +4,7 @@
 namespace BaclucEventPackage\NextEvent;
 
 
+use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Entity\ConfigurationSupplier;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
 use BaclucEventPackage\EventRepository;
@@ -27,7 +28,7 @@ class ShowNextEventEntrySupplier implements TableViewEntrySupplier
         $this->configurationSupplier = $configurationSupplier;
     }
 
-    public function getEntries()
+    public function getEntries(PaginationConfiguration $paginationConfiguration)
     {
         /** @var NextEventConfiguration $configuration */
         $configuration = $this->configurationSupplier->getConfiguration();

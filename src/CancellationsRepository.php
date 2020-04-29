@@ -58,13 +58,15 @@ class CancellationsRepository implements Repository
         return $this->standardRepository->delete($toDeleteEntity);
     }
 
-    public function getCancellationsOfEvent(int $eventId)
+    public function getCancellationsOfEvent(int $eventId, int $offset, int $limit)
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('cancellation')
            ->from(EventCancellation::class, "cancellation")
            ->join("cancellation.event", "event")
            ->where($qb->expr()->eq("event.id", ":eventId"))
+           ->setFirstResult($offset)
+           ->setMaxResults($limit)
            ->orderBy('cancellation.name')
            ->setParameter("eventId", $eventId);
         $query = $qb->getQuery();

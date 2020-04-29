@@ -4,6 +4,7 @@
 namespace BaclucEventPackage\NextEvent;
 
 
+use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
 use BaclucC5Crud\TableViewService;
@@ -57,7 +58,7 @@ class ShowNextEvent implements NoEditIdFallbackActionProcessor
 
     function process(array $get, array $post, ...$additionalParameters)
     {
-        $tableView = $this->tableViewService->getTableView();
+        $tableView = $this->tableViewService->getTableView(new PaginationConfiguration(0, null));
 
         $rows = $tableView->getRows();
         if (sizeof($rows) >= 1) {

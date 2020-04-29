@@ -4,6 +4,7 @@
 namespace BaclucEventPackage;
 
 
+use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
 
 class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier
@@ -24,9 +25,11 @@ class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier
     }
 
 
-    public function getEntries()
+    public function getEntries(PaginationConfiguration $paginationConfiguration)
     {
-        return $this->cancellationsRepository->getCancellationsOfEvent($this->eventId);
+        return $this->cancellationsRepository->getCancellationsOfEvent($this->eventId,
+            $paginationConfiguration->getOffset(),
+            $paginationConfiguration->getPageSize());
     }
 
     public function count()
