@@ -2,12 +2,14 @@
 
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucNextEventBlock;
 
+use BaclucC5Crud\Adapters\Concrete5\Concrete5CurrentUrlSupplier;
 use BaclucC5Crud\Adapters\Concrete5\Concrete5Renderer;
 use BaclucC5Crud\Adapters\Concrete5\DIContainerFactory;
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionRegistry;
 use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucC5Crud\Controller\CrudController;
+use BaclucC5Crud\Controller\CurrentUrlSupplier;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\Validation\FieldValidator;
 use BaclucC5Crud\Controller\Validation\IgnoreFieldForValidation;
@@ -59,7 +61,7 @@ class Controller extends BlockController
     public function view()
     {
         $this->processAction($this->createCrudController()
-                                  ->getActionFor(EventActionRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
+            ->getActionFor(EventActionRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
     }
 
     /**
@@ -107,6 +109,7 @@ class Controller extends BlockController
         $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
         $containerBuilder = new ContainerBuilder();
         $definitions[BlockController::class] = value($this);
+        $definitions[CurrentUrlSupplier::class] = autowire(Concrete5CurrentUrlSupplier::class);
         $definitions[Renderer::class] =
             create(Concrete5Renderer::class)->constructor($this, $packageController->getPackagePath());
         $definitions[ActionRegistry::class] = factory(function (ContainerInterface $container) {
@@ -131,7 +134,7 @@ class Controller extends BlockController
     public function action_show_cancel_event_form($blockId, $editId)
     {
         $this->processAction($this->createEventCancellationController()
-                                  ->getActionFor(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM, $blockId),
+            ->getActionFor(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM, $blockId),
             $editId);
     }
 
@@ -145,7 +148,7 @@ class Controller extends BlockController
     public function action_post_cancel_event_form($blockId, $editId)
     {
         $this->processAction($this->createEventCancellationController()
-                                  ->getActionFor(EventActionRegistryFactory::POST_CANCEL_EVENT_FORM, $blockId),
+            ->getActionFor(EventActionRegistryFactory::POST_CANCEL_EVENT_FORM, $blockId),
             $editId);
         if ($this->blockViewRenderOverride == null) {
             Redirect::page(Page::getCurrentPage())->send();
@@ -168,11 +171,11 @@ class Controller extends BlockController
         $entityFieldOverrides = new EntityFieldOverrideBuilder($entityClass);
 
         $entityFieldOverrides->forField("event")
-                             ->forType(FormField::class)
-                             ->useFactory(DontShowFormField::create())
-                             ->forType(FieldValidator::class)
-                             ->useFactory(IgnoreFieldForValidation::create())
-                             ->buildField();
+            ->forType(FormField::class)
+            ->useFactory(DontShowFormField::create())
+            ->forType(FieldValidator::class)
+            ->useFactory(IgnoreFieldForValidation::create())
+            ->buildField();
 
         $definitions = DIContainerFactory::createDefinition(
             $entityManager,
@@ -187,6 +190,7 @@ class Controller extends BlockController
         $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
         $containerBuilder = new ContainerBuilder();
         $definitions[BlockController::class] = value($this);
+        $definitions[CurrentUrlSupplier::class] = autowire(Concrete5CurrentUrlSupplier::class);
         $definitions[Renderer::class] =
             create(Concrete5Renderer::class)->constructor($this, $packageController->getPackagePath());
         $definitions[ActionRegistry::class] = factory(function (ContainerInterface $container) {
@@ -209,7 +213,7 @@ class Controller extends BlockController
     public function add()
     {
         $this->processAction($this->createConfigController()
-                                  ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID));
+            ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID));
     }
 
     /**

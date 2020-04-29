@@ -93,6 +93,8 @@ class ShowCancellations implements ActionProcessor
             [$this->viewActionRegistry->getByName(ActionRegistryFactory::BACK_TO_MAIN)]);
         $this->variableSetter->set("rowactions", []);
         $this->variableSetter->set("count", $tableView->getCount());
+        $this->variableSetter->set("currentPage", $paginationConfiguration->getCurrentPage());
+        $this->variableSetter->set("pageSize", $paginationConfiguration->getPageSize());
         $pageSizeField = new IntegerField("Entries to display", "pageSize", $paginationConfiguration->getPageSize());
         $this->variableSetter->set("pageSizeField", $pageSizeField);
         $this->renderer->render(self::TABLE_VIEW);
