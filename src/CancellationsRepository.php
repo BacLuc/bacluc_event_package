@@ -7,6 +7,9 @@ namespace BaclucEventPackage;
 use BaclucC5Crud\Entity\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use RuntimeException;
 
 class CancellationsRepository implements Repository
 {
@@ -66,6 +69,23 @@ class CancellationsRepository implements Repository
            ->setParameter("eventId", $eventId);
         $query = $qb->getQuery();
         return $query->getResult();
+    }
+
+    public function countCancellationsOfEvent(int $eventId)
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('count(cancellation)')
+           ->from(EventCancellation::class, "cancellation")
+           ->join("cancellation.event", "event")
+           ->where($qb->expr()->eq("event.id", ":eventId"))
+           ->orderBy('cancellation.name')
+           ->setParameter("eventId", $eventId);
+        $query = $qb->getQuery();
+        try {
+            return $query->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            throw new RuntimeException("Error getting count of result " . $e->getMessage());
+        }
     }
 
     public function count()

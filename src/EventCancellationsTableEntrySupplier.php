@@ -28,4 +28,9 @@ class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier
     {
         return $this->cancellationsRepository->getCancellationsOfEvent($this->eventId);
     }
+
+    public function count()
+    {
+        return $this->cancellationsRepository->countCancellationsOfEvent($this->eventId);
+    }
 }

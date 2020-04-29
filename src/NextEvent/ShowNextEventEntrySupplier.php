@@ -37,4 +37,9 @@ class ShowNextEventEntrySupplier implements TableViewEntrySupplier
             })
             ->toArray());
     }
+
+    public function count()
+    {
+        return 1;
+    }
 }

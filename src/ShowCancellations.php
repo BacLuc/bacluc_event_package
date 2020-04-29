@@ -83,6 +83,7 @@ class ShowCancellations implements ActionProcessor
         $this->variableSetter->set("actions",
             [$this->viewActionRegistry->getByName(ActionRegistryFactory::BACK_TO_MAIN)]);
         $this->variableSetter->set("rowactions", []);
+        $this->variableSetter->set("count", $tableView->getCount());
         $this->renderer->render(self::TABLE_VIEW);
     }
 
