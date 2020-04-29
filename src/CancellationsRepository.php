@@ -40,9 +40,9 @@ class CancellationsRepository implements Repository
     /**
      * @inheritDoc
      */
-    public function getAll()
+    public function getAll(int $offset = 0, int $limit = null)
     {
-        return $this->standardRepository->getAll();
+        return $this->standardRepository->getAll($offset, $limit);
     }
 
     public function getById(int $id)
@@ -66,5 +66,10 @@ class CancellationsRepository implements Repository
            ->setParameter("eventId", $eventId);
         $query = $qb->getQuery();
         return $query->getResult();
+    }
+
+    public function count()
+    {
+        $this->standardRepository->count();
     }
 }

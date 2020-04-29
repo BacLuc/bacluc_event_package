@@ -46,9 +46,9 @@ class EventRepository implements Repository
     /**
      * @inheritDoc
      */
-    public function getAll()
+    public function getAll(int $offset = 0, int $limit = null)
     {
-        return $this->standardRepository->getAll();
+        return $this->standardRepository->getAll($offset, $limit);
     }
 
     public function getById(int $id)
@@ -75,5 +75,11 @@ class EventRepository implements Repository
            ->setParameter("date", new DateTime());
         $query = $qb->getQuery();
         return $query->getResult();
+    }
+
+
+    public function count()
+    {
+        return $this->standardRepository->count();
     }
 }
