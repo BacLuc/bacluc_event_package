@@ -36,7 +36,6 @@ use DI\NotFoundException;
 use Exception;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
-use RuntimeException;
 use function DI\autowire;
 use function DI\create;
 use function DI\factory;
@@ -52,11 +51,7 @@ class Controller extends BlockController
     public function __construct($obj = null)
     {
         parent::__construct($obj);
-        try {
-            $this->initializeCrud($this, $this->createCrudController(), $this->bID);
-        } catch (DependencyException | NotFoundException $e) {
-            throw new RuntimeException($e);
-        }
+        $this->initializeCrud($this, [$this, "createCrudController"], $this->bID);
     }
 
     /**
