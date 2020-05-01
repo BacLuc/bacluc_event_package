@@ -2,19 +2,17 @@
 
 namespace Concrete\Package\BaclucEventPackage\Block\BaclucNextEventBlock;
 
+use BaclucC5Crud\Adapters\Concrete5\Concrete5BlockConfigController;
 use BaclucC5Crud\Adapters\Concrete5\Concrete5CurrentUrlSupplier;
 use BaclucC5Crud\Adapters\Concrete5\Concrete5Renderer;
 use BaclucC5Crud\Adapters\Concrete5\DIContainerFactory;
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionRegistry;
-use BaclucC5Crud\Controller\ActionRegistryFactory;
 use BaclucC5Crud\Controller\CrudController;
 use BaclucC5Crud\Controller\CurrentUrlSupplier;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\Validation\FieldValidator;
 use BaclucC5Crud\Controller\Validation\IgnoreFieldForValidation;
-use BaclucC5Crud\Controller\Validation\ValidationResult;
-use BaclucC5Crud\Controller\Validation\ValidationResultItem;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
 use BaclucC5Crud\FieldConfigurationOverride\EntityFieldOverrideBuilder;
 use BaclucC5Crud\View\FormType;
@@ -31,7 +29,6 @@ use BaclucEventPackage\NextEvent\ShowNextEventEntrySupplier;
 use BaclucEventPackage\NoEditIdFallbackActionProcessor;
 use BaclucEventPackage\ViewActionRegistryFactory;
 use Concrete\Core\Block\BlockController;
-use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Routing\Redirect;
@@ -44,6 +41,7 @@ use DI\NotFoundException;
 use Exception;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
+use RuntimeException;
 use function DI\autowire;
 use function DI\create;
 use function DI\factory;
@@ -51,6 +49,20 @@ use function DI\value;
 
 class Controller extends BlockController
 {
+    use Concrete5BlockConfigController;
+
+    /**
+     * Controller constructor.
+     */
+    public function __construct($obj = null)
+    {
+        parent::__construct($obj);
+        try {
+            $this->initializeConfig($this, $this->createConfigController(), $this->bID);
+        } catch (DependencyException | NotFoundException $e) {
+            throw new RuntimeException($e);
+        }
+    }
 
 
     /**
@@ -61,7 +73,7 @@ class Controller extends BlockController
     public function view()
     {
         $this->processAction($this->createCrudController()
-            ->getActionFor(EventActionRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
+                                  ->getActionFor(EventActionRegistryFactory::SHOW_NEXT_EVENT, $this->bID));
     }
 
     /**
@@ -204,79 +216,6 @@ class Controller extends BlockController
         $containerBuilder->addDefinitions($definitions);
         $container = $containerBuilder->build();
         return $container->get(CrudController::class);
-    }
-
-    /**
-     * @throws DependencyException
-     * @throws NotFoundException
-     */
-    public function add()
-    {
-        $this->processAction($this->createConfigController()
-            ->getActionFor(ActionRegistryFactory::ADD_NEW_ROW_FORM, $this->bID));
-    }
-
-    /**
-     * @throws DependencyException
-     * @throws NotFoundException
-     */
-    public function edit()
-    {
-        $this->processAction($this->createConfigController()
-            ->getActionFor(ActionRegistryFactory::EDIT_ROW_FORM, $this->bID),
-            $this->bID);
-    }
-
-    /**
-     * @param array|string|null $args
-     * @return bool|ErrorList|void
-     * @throws DependencyException
-     * @throws NotFoundException
-     */
-    public function validate($args)
-    {
-
-        /** @var $validationResult ValidationResult */
-        $validationResult = $this->processAction($this->createConfigController()
-            ->getActionFor(ActionRegistryFactory::VALIDATE_FORM,
-                $this->bID),
-            $this->bID);
-        /** @var $e ErrorList */
-        $e = $this->app->make(ErrorList::class);
-        foreach ($validationResult as $validationResultItem) {
-            /** @var $validationResultItem ValidationResultItem */
-            foreach ($validationResultItem->getMessages() as $message) {
-                $e->add($validationResultItem->getName() . ": " . $message,
-                    $validationResultItem->getName(),
-                    $validationResultItem->getName());
-            }
-        }
-        return $e;
-    }
-
-    /**
-     * @param array $args
-     * @throws DependencyException
-     * @throws NotFoundException
-     */
-    public function save($args)
-    {
-        parent::save($args);
-        $this->processAction($this->createConfigController()
-            ->getActionFor(ActionRegistryFactory::POST_FORM, $this->bID),
-            $this->bID);
-    }
-
-    /**
-     * @throws DependencyException
-     * @throws NotFoundException
-     */
-    public function delete()
-    {
-        parent::delete();
-        $this->processAction($this->createConfigController()
-            ->getActionFor(ActionRegistryFactory::DELETE_ENTRY, $this->bID),
-            $this->bID);
     }
 
     /**
