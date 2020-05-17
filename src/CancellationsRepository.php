@@ -4,6 +4,7 @@
 namespace BaclucEventPackage;
 
 
+use BaclucC5Crud\Entity\OrderConfigEntry;
 use BaclucC5Crud\Entity\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,9 +44,12 @@ class CancellationsRepository implements Repository
     /**
      * @inheritDoc
      */
-    public function getAll(int $offset = 0, int $limit = null)
+    public function getAll(int $offset = 0, int $limit = null, array $orderEntries = [])
     {
-        return $this->standardRepository->getAll($offset, $limit);
+        if (sizeof($orderEntries) == 0) {
+            $orderEntries = [new OrderConfigEntry("name")];
+        }
+        return $this->standardRepository->getAll($offset, $limit, $orderEntries);
     }
 
     public function getById(int $id)
@@ -62,13 +66,13 @@ class CancellationsRepository implements Repository
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('cancellation')
-           ->from(EventCancellation::class, "cancellation")
-           ->join("cancellation.event", "event")
-           ->where($qb->expr()->eq("event.id", ":eventId"))
-           ->setFirstResult($offset)
-           ->setMaxResults($limit)
-           ->orderBy('cancellation.name')
-           ->setParameter("eventId", $eventId);
+            ->from(EventCancellation::class, "cancellation")
+            ->join("cancellation.event", "event")
+            ->where($qb->expr()->eq("event.id", ":eventId"))
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->orderBy('cancellation.name')
+            ->setParameter("eventId", $eventId);
         $query = $qb->getQuery();
         return $query->getResult();
     }
@@ -77,11 +81,11 @@ class CancellationsRepository implements Repository
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('count(cancellation)')
-           ->from(EventCancellation::class, "cancellation")
-           ->join("cancellation.event", "event")
-           ->where($qb->expr()->eq("event.id", ":eventId"))
-           ->orderBy('cancellation.name')
-           ->setParameter("eventId", $eventId);
+            ->from(EventCancellation::class, "cancellation")
+            ->join("cancellation.event", "event")
+            ->where($qb->expr()->eq("event.id", ":eventId"))
+            ->orderBy('cancellation.name')
+            ->setParameter("eventId", $eventId);
         $query = $qb->getQuery();
         try {
             return $query->getSingleScalarResult();

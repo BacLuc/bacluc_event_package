@@ -4,6 +4,7 @@
 namespace BaclucEventPackage;
 
 
+use BaclucC5Crud\Entity\OrderConfigEntry;
 use BaclucC5Crud\Entity\Repository;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -46,9 +47,12 @@ class EventRepository implements Repository
     /**
      * @inheritDoc
      */
-    public function getAll(int $offset = 0, int $limit = null)
+    public function getAll(int $offset = 0, int $limit = null, array $orderEntries = [])
     {
-        return $this->standardRepository->getAll($offset, $limit);
+        if (sizeof($orderEntries) == 0) {
+            $orderEntries = [new OrderConfigEntry("date_from", false), new OrderConfigEntry("date_to", false)];
+        }
+        return $this->standardRepository->getAll($offset, $limit, $orderEntries);
     }
 
     public function getById(int $id)
