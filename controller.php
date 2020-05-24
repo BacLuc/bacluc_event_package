@@ -55,12 +55,16 @@ class Controller extends Package
     public function uninstall()
     {
         $eventblock = BlockType::getByHandle("bacluc_event_block");
+        $nextEventBlock = BlockType::getByHandle("bacluc_next_event_block");
         $em = $this->app->make(EntityManagerInterface::class);
         $em->getConnection()->beginTransaction();
         try {
 
             if (is_object($eventblock)) {
                 $eventblock->delete();
+            }
+            if (is_object($nextEventBlock)) {
+                $nextEventBlock->delete();
             }
             parent::uninstall();
             $em->getConnection()->commit();
