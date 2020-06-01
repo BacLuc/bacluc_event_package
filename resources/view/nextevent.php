@@ -5,11 +5,19 @@ $date_to = $date_to ?: "";
 $description = $description ?: "";
 $actions = $actions ?: [];
 $eventId = $eventId ?: [];
+$address = $address ?: "";
 if (isset($eventfound) && $eventfound) {
     ?>
     <div class="bacluc_event bacluc_event_next_event_block">
         <div class="row">
             <div class="col-xs-12 title"><?= $title ?></div>
+            <div class="col-xs-12 addressrow">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <span class='prefix address_prefix'><?= t("Address:") ?></span> <?= $address ?>
+                    </div>
+                </div>
+            </div>
             <div class="col-xs-12 daterow">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
