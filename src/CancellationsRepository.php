@@ -4,6 +4,7 @@
 namespace BaclucEventPackage;
 
 
+use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Entity\OrderConfigEntry;
 use BaclucC5Crud\Entity\Repository;
 use Doctrine\ORM\EntityManager;
@@ -36,7 +37,7 @@ class CancellationsRepository implements Repository
         return $this->standardRepository->create();
     }
 
-    public function persist($entity)
+    public function persist(Identifiable $entity)
     {
         return $this->standardRepository->persist($entity);
     }
@@ -57,7 +58,7 @@ class CancellationsRepository implements Repository
         return $this->standardRepository->getById($id);
     }
 
-    public function delete($toDeleteEntity)
+    public function delete(Identifiable $toDeleteEntity)
     {
         return $this->standardRepository->delete($toDeleteEntity);
     }

@@ -4,6 +4,7 @@
 namespace BaclucEventPackage\NextEvent;
 
 
+use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Lib\GetterTrait;
 use BaclucC5Crud\Lib\SetterTrait;
 use BaclucEventPackage\Group;
@@ -23,9 +24,10 @@ use Doctrine\ORM\Mapping\Table;
  * @Entity
  * @Table(name="NextEventConfiguration")
  */
-class NextEventConfiguration
+class NextEventConfiguration implements Identifiable
 {
     use GetterTrait, SetterTrait;
+
     /**
      * Id of the block the configuration references
      * @var int
@@ -51,5 +53,18 @@ class NextEventConfiguration
         $this->showNextEventOfGroups = new ArrayCollection();
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+    public static function getIdFieldName(): string
+    {
+        return "id";
+    }
 }

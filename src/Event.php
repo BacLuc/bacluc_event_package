@@ -1,6 +1,7 @@
 <?php
 namespace BaclucEventPackage;
 
+use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Lib\GetterTrait;
 use BaclucC5Crud\Lib\SetterTrait;
 use DateTime;
@@ -23,9 +24,10 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(name="bacluc_event")
  *
  */
-class Event
+class Event implements Identifiable
 {
     use SetterTrait, GetterTrait;
+
     /**
      * @var int
      * @Id @Column(type="integer", nullable=false, options={"unsigned":true})
@@ -72,7 +74,23 @@ class Event
      */
     protected $address;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->eventGroups = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+    public static function getIdFieldName(): string
+    {
+        return "id";
     }
 }

@@ -4,6 +4,7 @@
 namespace BaclucEventPackage;
 
 
+use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Entity\OrderConfigEntry;
 use BaclucC5Crud\Entity\Repository;
 use DateTime;
@@ -39,7 +40,7 @@ class EventRepository implements Repository
         return $this->standardRepository->create();
     }
 
-    public function persist($entity)
+    public function persist(Identifiable $entity)
     {
         return $this->standardRepository->persist($entity);
     }
@@ -60,7 +61,7 @@ class EventRepository implements Repository
         return $this->standardRepository->getById($id);
     }
 
-    public function delete($toDeleteEntity)
+    public function delete(Identifiable $toDeleteEntity)
     {
         return $this->standardRepository->delete($toDeleteEntity);
     }
@@ -69,14 +70,14 @@ class EventRepository implements Repository
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('event')
-           ->from(Event::class, "event")
-           ->join("event.eventGroups", "groups")
-           ->where($qb->expr()->in("groups.gID", ":groupIds"))
-           ->andWhere($qb->expr()->gte("event.date_to", ":date"))
-           ->orderBy('event.date_from')
-           ->setMaxResults(1)
-           ->setParameter("groupIds", $groupIds)
-           ->setParameter("date", new DateTime());
+            ->from(Event::class, "event")
+            ->join("event.eventGroups", "groups")
+            ->where($qb->expr()->in("groups.gID", ":groupIds"))
+            ->andWhere($qb->expr()->gte("event.date_to", ":date"))
+            ->orderBy('event.date_from')
+            ->setMaxResults(1)
+            ->setParameter("groupIds", $groupIds)
+            ->setParameter("date", new DateTime());
         $query = $qb->getQuery();
         return $query->getResult();
     }

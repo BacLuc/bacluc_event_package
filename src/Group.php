@@ -8,6 +8,7 @@
 
 namespace BaclucEventPackage;
 
+use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Entity\WithUniqueStringRepresentation;
 use BaclucC5Crud\Lib\GetterTrait;
 use BaclucC5Crud\Lib\SetterTrait;
@@ -35,7 +36,7 @@ use Doctrine\ORM\Mapping\Table;
  * )
  *
  */
-class Group implements WithUniqueStringRepresentation
+class Group implements WithUniqueStringRepresentation, Identifiable
 {
     use SetterTrait, GetterTrait;
 
@@ -164,5 +165,20 @@ class Group implements WithUniqueStringRepresentation
     public function createUniqueString(): string
     {
         return $this->gName;
+    }
+
+    public function getId()
+    {
+        return $this->gID;
+    }
+
+    public function setId(int $id)
+    {
+        $this->gID = $id;
+    }
+
+    public static function getIdFieldName(): string
+    {
+        return "gID";
     }
 }
