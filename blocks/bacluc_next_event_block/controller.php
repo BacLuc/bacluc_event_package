@@ -140,8 +140,11 @@ class Controller extends BlockController
      */
     public function action_show_cancel_event_form($blockId, $editId)
     {
+        if ($blockId != $this->bID) {
+            return $this->view();
+        }
         $this->processAction($this->createEventCancellationController()
-            ->getActionFor(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM, $blockId),
+                                  ->getActionFor(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM, $blockId),
             $editId);
     }
 
