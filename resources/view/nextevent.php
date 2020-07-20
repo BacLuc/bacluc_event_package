@@ -31,17 +31,19 @@ if (isset($eventfound) && $eventfound) {
             <div class="col-xs-12 description"><?= $description ?></div>
         </div>
         <div class="row">
-            <?php foreach ($actions as $action) { ?>
-                <?php /** @var $action \BaclucC5Crud\View\ViewActionDefinition */ ?>
-                <a href="<?= $this->action($action->getAction()) . "/$eventId" ?>">
-                    <button type="submit" class="btn inlinebtn actionbutton <?= $action->getButtonClass() ?>"
-                            aria-label="<?= t($action->getAriaLabel()) ?>"
-                            title="<?= t($action->getTitle()) ?>">
-                        <i class="fa <?= $action->getIconClass() ?>" aria-hidden="true"> </i>
-                        <span><?= t("Cancel") ?></span>
-                    </button>
-                </a>
-            <?php } ?>
+            <div class="col-xs-12">
+                <?php foreach ($actions as $action) { ?>
+                    <?php /** @var $action \BaclucC5Crud\View\ViewActionDefinition */ ?>
+                    <a href="<?= $this->action($action->getAction()) . "/$eventId" ?>">
+                        <button type="submit" class="btn inlinebtn actionbutton <?= $action->getButtonClass() ?>"
+                                aria-label="<?= t($action->getAriaLabel()) ?>"
+                                title="<?= t($action->getTitle()) ?>">
+                            <i class="fa <?= $action->getIconClass() ?>" aria-hidden="true"> </i>
+                            <span><?= t("Cancel") ?></span>
+                        </button>
+                    </a>
+                <?php } ?>
+            </div>
         </div>
     </div>
     <?php
