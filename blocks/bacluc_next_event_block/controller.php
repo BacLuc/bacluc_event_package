@@ -29,10 +29,12 @@ use BaclucEventPackage\NextEvent\ShowNextEventEntrySupplier;
 use BaclucEventPackage\NoEditIdFallbackActionProcessor;
 use BaclucEventPackage\ViewActionRegistryFactory;
 use Concrete\Core\Block\BlockController;
+use Concrete\Core\Localization\Localization;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Page;
 use Concrete\Core\Routing\Redirect;
 use Concrete\Core\Support\Facade\Application;
+use Concrete\Core\Support\Facade\Facade;
 use Concrete\Package\BaclucC5Crud\Controller as PackageController;
 use Concrete\Package\BaclucEventPackage\Controller as EventPackageController;
 use DI\ContainerBuilder;
@@ -57,6 +59,11 @@ class Controller extends BlockController
     {
         parent::__construct($obj);
         $this->initializeConfig($this, [$this, "createConfigController"], $this->bID);
+
+        $app = Facade::getFacadeApplication();
+        /** @var Localization $localisation */
+        $localization = $app->make('Concrete\Core\Localization\Localization');
+        $localization->setLocale("de_CH");
     }
 
 
