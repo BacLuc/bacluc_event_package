@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lucius
  * Date: 01.02.16
- * Time: 23:08
+ * Time: 23:08.
  */
 
 namespace BaclucEventPackage;
@@ -22,27 +22,26 @@ use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class Group
- * package Concrete\Package\BasicTablePackage\Src
+ * package Concrete\Package\BasicTablePackage\Src.
+ *
  * @Entity
- * @Table(name="Groups"
- * , indexes={
- * @Index(name="gName",
- * columns={"gName"}),
- * @Index(name="gBadgeFID",
- * columns={"gBadgeFID"}),
- * @Index(name="pkgID",
- * columns={"pkgID"})
+ * @Table(name="Groups", indexes={
+ *     @Index(name="gName",
+ *     columns={"gName"}),
+ *     @Index(name="gBadgeFID",
+ *     columns={"gBadgeFID"}),
+ *     @Index(name="pkgID",
+ *     columns={"pkgID"})
  * }
  * )
- *
  */
-class Group implements WithUniqueStringRepresentation, Identifiable
-{
-    use SetterTrait, GetterTrait;
+class Group implements WithUniqueStringRepresentation, Identifiable {
+    use SetterTrait;
+    use GetterTrait;
 
     /**
      * @var int
-     * @Id @Column(type="integer", nullable=false, options={"unsigned":true})
+     * @Id @Column(type="integer", nullable=false, options={"unsigned": true})
      * @GeneratedValue(strategy="AUTO")
      */
     private $gID;
@@ -60,11 +59,10 @@ class Group implements WithUniqueStringRepresentation, Identifiable
     private $gDescription;
 
     /**
-     * @var boolean
-     * @Column(type="boolean", options={"default"=0})
+     * @var bool
+     * @Column(type="boolean", options={"default": 0})
      */
     private $gUserExpirationIsEnabled;
-
 
     /**
      * @var string
@@ -80,8 +78,7 @@ class Group implements WithUniqueStringRepresentation, Identifiable
 
     /**
      * @var int
-     * @Column(type="integer", length=10, nullable=false, options={"unsigned":true, "default"=0})
-     *
+     * @Column(type="integer", length=10, nullable=false, options={"unsigned": true, "default": 0})
      */
     private $gUserExpirationInterval;
 
@@ -92,18 +89,16 @@ class Group implements WithUniqueStringRepresentation, Identifiable
     private $gUserExpirationAction;
 
     /**
-     * @var boolean
-     * @Column(type="boolean", nullable=false, options={"default"=0})
+     * @var bool
+     * @Column(type="boolean", nullable=false, options={"default": 0})
      */
     private $gIsBadge;
 
     /**
      * @var int
-     * @Column(type="integer", length=10, nullable=false, options={"unsigned":true, "default"=0})
-     *
+     * @Column(type="integer", length=10, nullable=false, options={"unsigned": true, "default": 0})
      */
     private $gBadgeFID;
-
 
     /**
      * @var string
@@ -113,31 +108,31 @@ class Group implements WithUniqueStringRepresentation, Identifiable
 
     /**
      * @var int
-     * @Column(type="integer", length=11, nullable=false, options={"default"=0})
+     * @Column(type="integer", length=11, nullable=false, options={"default": 0})
      */
     private $gBadgeCommunityPointValue;
 
     /**
-     * @var boolean
-     * @Column(type="boolean", nullable=false, options={"default"=0})
+     * @var bool
+     * @Column(type="boolean", nullable=false, options={"default": 0})
      */
     private $gIsAutomated;
 
     /**
-     * @var boolean
-     * @Column(type="boolean", nullable=false, options={"default"=0})
+     * @var bool
+     * @Column(type="boolean", nullable=false, options={"default": 0})
      */
     private $gCheckAutomationOnRegister;
 
     /**
-     * @var boolean
-     * @Column(type="boolean", nullable=false, options={"default"=0})
+     * @var bool
+     * @Column(type="boolean", nullable=false, options={"default": 0})
      */
     private $gCheckAutomationOnLogin;
 
     /**
-     * @var boolean
-     * @Column(type="boolean", nullable=false, options={"default"=0})
+     * @var bool
+     * @Column(type="boolean", nullable=false, options={"default": 0})
      */
     private $gCheckAutomationOnJobRun;
 
@@ -149,36 +144,30 @@ class Group implements WithUniqueStringRepresentation, Identifiable
 
     /**
      * @var int
-     * @Column(type="integer", length=10, nullable=false, options={"unsigned":true, "default"=0})
-     *
+     * @Column(type="integer", length=10, nullable=false, options={"unsigned": true, "default": 0})
      */
     private $pkgID;
 
     /**
      * @return string
      */
-    public function __toString()
-    {
+    public function __toString() {
         return $this->gName;
     }
 
-    public function createUniqueString(): string
-    {
+    public function createUniqueString(): string {
         return $this->gName;
     }
 
-    public function getId()
-    {
+    public function getId() {
         return $this->gID;
     }
 
-    public function setId(int $id)
-    {
+    public function setId(int $id) {
         $this->gID = $id;
     }
 
-    public static function getIdFieldName(): string
-    {
-        return "gID";
+    public static function getIdFieldName(): string {
+        return 'gID';
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BaclucEventPackage;
-
 
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionProcessors\ShowEditEntryForm;
@@ -12,8 +10,7 @@ use BaclucC5Crud\View\CancelFormViewAction;
 use BaclucC5Crud\View\FormView\TextField;
 use BaclucC5Crud\View\SubmitFormViewAction;
 
-class ShowCancelEventForm implements ActionProcessor
-{
+class ShowCancelEventForm implements ActionProcessor {
     /**
      * @var VariableSetter
      */
@@ -43,25 +40,21 @@ class ShowCancelEventForm implements ActionProcessor
         $this->cancelFormAction = $cancelFormAction;
     }
 
-
-    function getName(): string
-    {
+    public function getName(): string {
         return EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM;
     }
 
-    function process(array $get, array $post, ...$additionalParameters)
-    {
-        $textField = new TextField("Name", "name", "");
+    public function process(array $get, array $post, ...$additionalParameters) {
+        $textField = new TextField('Name', 'name', '');
         $editId = null;
-        if (count($additionalParameters) == 1) {
+        if (1 == count($additionalParameters)) {
             $editId = $additionalParameters[0];
         }
-        $this->variableSetter->set("fields", [$textField]);
-        $this->variableSetter->set("editId", $editId);
-        $this->variableSetter->set("addFormTags", true);
-        $this->variableSetter->set("submitFormAction", $this->submitFormAction);
-        $this->variableSetter->set("cancelFormAction", $this->cancelFormAction);
+        $this->variableSetter->set('fields', [$textField]);
+        $this->variableSetter->set('editId', $editId);
+        $this->variableSetter->set('addFormTags', true);
+        $this->variableSetter->set('submitFormAction', $this->submitFormAction);
+        $this->variableSetter->set('cancelFormAction', $this->cancelFormAction);
         $this->renderer->render(ShowEditEntryForm::FORM_VIEW);
     }
-
 }

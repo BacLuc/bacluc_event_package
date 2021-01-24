@@ -1,14 +1,11 @@
 <?php
 
-
 namespace BaclucEventPackage;
-
 
 use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
 
-class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier
-{
+class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier {
     /**
      * @var int
      */
@@ -18,22 +15,20 @@ class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier
      */
     private $cancellationsRepository;
 
-    public function __construct(int $eventId, CancellationsRepository $cancellationsRepository)
-    {
+    public function __construct(int $eventId, CancellationsRepository $cancellationsRepository) {
         $this->eventId = $eventId;
         $this->cancellationsRepository = $cancellationsRepository;
     }
 
-
-    public function getEntries(PaginationConfiguration $paginationConfiguration)
-    {
-        return $this->cancellationsRepository->getCancellationsOfEvent($this->eventId,
+    public function getEntries(PaginationConfiguration $paginationConfiguration) {
+        return $this->cancellationsRepository->getCancellationsOfEvent(
+            $this->eventId,
             $paginationConfiguration->getOffset(),
-            $paginationConfiguration->getPageSize());
+            $paginationConfiguration->getPageSize()
+        );
     }
 
-    public function count()
-    {
+    public function count() {
         return $this->cancellationsRepository->countCancellationsOfEvent($this->eventId);
     }
 }

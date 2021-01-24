@@ -1,17 +1,14 @@
 <?php
 
-
 namespace BaclucEventPackage\NextEvent;
-
 
 use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Entity\ConfigurationSupplier;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
-use BaclucEventPackage\EventRepository;
 use function BaclucC5Crud\Lib\collect as collect;
+use BaclucEventPackage\EventRepository;
 
-class ShowNextEventEntrySupplier implements TableViewEntrySupplier
-{
+class ShowNextEventEntrySupplier implements TableViewEntrySupplier {
     /**
      * @var EventRepository
      */
@@ -21,17 +18,15 @@ class ShowNextEventEntrySupplier implements TableViewEntrySupplier
      */
     private $configurationSupplier;
 
-
-    public function __construct(EventRepository $eventRepository, ConfigurationSupplier $configurationSupplier)
-    {
+    public function __construct(EventRepository $eventRepository, ConfigurationSupplier $configurationSupplier) {
         $this->eventRepository = $eventRepository;
         $this->configurationSupplier = $configurationSupplier;
     }
 
-    public function getEntries(PaginationConfiguration $paginationConfiguration)
-    {
+    public function getEntries(PaginationConfiguration $paginationConfiguration) {
         /** @var NextEventConfiguration $configuration */
         $configuration = $this->configurationSupplier->getConfiguration();
+
         return $this->eventRepository->getLastEventOfGroup(collect($configuration->showNextEventOfGroups)
             ->map(function ($group) {
                 return $group->gID;
@@ -39,8 +34,7 @@ class ShowNextEventEntrySupplier implements TableViewEntrySupplier
             ->toArray());
     }
 
-    public function count()
-    {
+    public function count() {
         return 1;
     }
 }
