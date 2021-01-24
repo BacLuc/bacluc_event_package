@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BaclucEventPackage;
-
 
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionRegistryFactory;
@@ -14,9 +12,8 @@ use BaclucC5Crud\View\FormView\IntegerField;
 use BaclucC5Crud\View\TableView\TableViewFieldConfiguration;
 use BaclucC5Crud\View\ViewActionRegistry;
 
-class ShowCancellations implements ActionProcessor
-{
-    const TABLE_VIEW = "view/table";
+class ShowCancellations implements ActionProcessor {
+    const TABLE_VIEW = 'view/table';
     /**
      * @var VariableSetter
      */
@@ -64,20 +61,17 @@ class ShowCancellations implements ActionProcessor
         $this->paginationParser = $paginationParser;
     }
 
-    function getName(): string
-    {
+    public function getName(): string {
         return EventActionRegistryFactory::SHOW_CANCELLATIONS;
     }
 
-
-    function process(array $get, array $post, ...$additionalParameters)
-    {
+    public function process(array $get, array $post, ...$additionalParameters) {
         $editId = null;
-        if (count($additionalParameters) == 1 && $additionalParameters[0] != null) {
+        if (1 == count($additionalParameters) && null != $additionalParameters[0]) {
             $editId = $additionalParameters[0];
         }
-        if ($editId == null) {
-            return call_user_func_array([$this->noEditIdFallbackActionProcessor, "process"], func_get_args());
+        if (null == $editId) {
+            return call_user_func_array([$this->noEditIdFallbackActionProcessor, 'process'], func_get_args());
         }
 
         $eventCancellationsTableEntrySupplier =
@@ -87,17 +81,18 @@ class ShowCancellations implements ActionProcessor
 
         $paginationConfiguration = $this->paginationParser->parse($get);
         $tableView = $tableViewService->getTableView($paginationConfiguration);
-        $this->variableSetter->set("headers", $tableView->getHeaders());
-        $this->variableSetter->set("rows", $tableView->getRows());
-        $this->variableSetter->set("actions",
-            [$this->viewActionRegistry->getByName(ActionRegistryFactory::BACK_TO_MAIN)]);
-        $this->variableSetter->set("rowactions", []);
-        $this->variableSetter->set("count", $tableView->getCount());
-        $this->variableSetter->set("currentPage", $paginationConfiguration->getCurrentPage());
-        $this->variableSetter->set("pageSize", $paginationConfiguration->getPageSize());
-        $pageSizeField = new IntegerField("Entries to display", "pageSize", $paginationConfiguration->getPageSize());
-        $this->variableSetter->set("pageSizeField", $pageSizeField);
+        $this->variableSetter->set('headers', $tableView->getHeaders());
+        $this->variableSetter->set('rows', $tableView->getRows());
+        $this->variableSetter->set(
+            'actions',
+            [$this->viewActionRegistry->getByName(ActionRegistryFactory::BACK_TO_MAIN)]
+        );
+        $this->variableSetter->set('rowactions', []);
+        $this->variableSetter->set('count', $tableView->getCount());
+        $this->variableSetter->set('currentPage', $paginationConfiguration->getCurrentPage());
+        $this->variableSetter->set('pageSize', $paginationConfiguration->getPageSize());
+        $pageSizeField = new IntegerField('Entries to display', 'pageSize', $paginationConfiguration->getPageSize());
+        $this->variableSetter->set('pageSizeField', $pageSizeField);
         $this->renderer->render(self::TABLE_VIEW);
     }
-
 }

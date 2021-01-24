@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BaclucEventPackage;
-
 
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\Renderer;
@@ -13,13 +11,12 @@ use BaclucC5Crud\Controller\ValuePersisters\PersistorConfiguration;
 use BaclucC5Crud\Controller\VariableSetter;
 use BaclucC5Crud\Entity\Repository;
 use BaclucC5Crud\FormViewAfterValidationFailedService;
+use function BaclucC5Crud\Lib\collect as collect;
 use BaclucC5Crud\View\CancelFormViewAction;
 use BaclucC5Crud\View\SubmitFormViewAction;
-use function BaclucC5Crud\Lib\collect as collect;
 
-class PostCancelEventForm implements ActionProcessor
-{
-    const FORM_VIEW = "view/form";
+class PostCancelEventForm implements ActionProcessor {
+    const FORM_VIEW = 'view/form';
     /**
      * @var Validator
      */
@@ -59,15 +56,6 @@ class PostCancelEventForm implements ActionProcessor
 
     /**
      * PostFormActionProcessor constructor.
-     * @param Validator $validator
-     * @param FormViewAfterValidationFailedService $formViewAfterValidationFailedService
-     * @param Repository $repository
-     * @param PersistorConfiguration $peristorConfiguration
-     * @param VariableSetter $variableSetter
-     * @param Renderer $renderer
-     * @param NoEditIdFallbackActionProcessor $noEditIdFallbackActionProcessor
-     * @param SubmitFormViewAction $submitFormAction
-     * @param CancelFormViewAction $cancelFormAction
      */
     public function __construct(
         Validator $validator,
@@ -91,19 +79,17 @@ class PostCancelEventForm implements ActionProcessor
         $this->cancelFormAction = $cancelFormAction;
     }
 
-    function getName(): string
-    {
+    public function getName(): string {
         return EventActionRegistryFactory::POST_CANCEL_EVENT_FORM;
     }
 
-    function process(array $get, array $post, ...$additionalParameters)
-    {
+    public function process(array $get, array $post, ...$additionalParameters) {
         $editId = null;
-        if (count($additionalParameters) == 1 && $additionalParameters[0] != null) {
+        if (1 == count($additionalParameters) && null != $additionalParameters[0]) {
             $editId = $additionalParameters[0];
         }
-        if ($editId == null) {
-            return call_user_func_array([$this->noEditIdFallbackActionProcessor, "process"], func_get_args());
+        if (null == $editId) {
+            return call_user_func_array([$this->noEditIdFallbackActionProcessor, 'process'], func_get_args());
         }
 
         $validationResult = $this->validator->validate($post);
@@ -115,7 +101,8 @@ class PostCancelEventForm implements ActionProcessor
                 })
                 ->map(function (ValidationResultItem $validationResultItem) {
                     return $validationResultItem->getPostValue();
-                });
+                })
+            ;
 
             $postValues['event'] = $editId;
             $entity = $this->repository->create();
@@ -128,20 +115,19 @@ class PostCancelEventForm implements ActionProcessor
             $this->repository->persist($entity);
         } else {
             $formView = $this->formViewAfterValidationFailedService->getFormView($validationResult);
-            $this->variableSetter->set("fields", $formView->getFields());
-            $this->variableSetter->set("editId", $editId);
+            $this->variableSetter->set('fields', $formView->getFields());
+            $this->variableSetter->set('editId', $editId);
             $validationErrors = collect($validationResult)
                 ->keyBy(function (ValidationResultItem $resultItem) {
                     return $resultItem->getName();
                 })->map(function (ValidationResultItem $resultItem) {
                     return $resultItem->getMessages();
                 });
-            $this->variableSetter->set("validationErrors", $validationErrors);
-            $this->variableSetter->set("addFormTags", true);
-            $this->variableSetter->set("submitFormAction", $this->submitFormAction);
-            $this->variableSetter->set("cancelFormAction", $this->cancelFormAction);
+            $this->variableSetter->set('validationErrors', $validationErrors);
+            $this->variableSetter->set('addFormTags', true);
+            $this->variableSetter->set('submitFormAction', $this->submitFormAction);
+            $this->variableSetter->set('cancelFormAction', $this->cancelFormAction);
             $this->renderer->render(self::FORM_VIEW);
         }
     }
-
 }

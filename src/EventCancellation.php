@@ -1,6 +1,5 @@
 <?php
 
-
 namespace BaclucEventPackage;
 
 use BaclucC5Crud\Entity\Identifiable;
@@ -16,19 +15,19 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 /**
- * Class Event
+ * Class Event.
+ *
  * @IgnoreAnnotation("package")\n*
  * @Entity
  * @Table(name="bacluc_event_cancellation")
- *
  */
-class EventCancellation implements Identifiable
-{
-    use SetterTrait, GetterTrait;
+class EventCancellation implements Identifiable {
+    use SetterTrait;
+    use GetterTrait;
 
     /**
      * @var int
-     * @Id @Column(type="integer", nullable=false, options={"unsigned":true})
+     * @Id @Column(type="integer", nullable=false, options={"unsigned": true})
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -43,22 +42,18 @@ class EventCancellation implements Identifiable
      * @var Event
      * @ManyToOne(targetEntity="BaclucEventPackage\Event")
      * @JoinColumn(name="event_id", onDelete="CASCADE", nullable=false)
-     *
      */
     private $event;
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function setId(int $id)
-    {
+    public function setId(int $id) {
         $this->id = $id;
     }
 
-    public static function getIdFieldName(): string
-    {
-        return "id";
+    public static function getIdFieldName(): string {
+        return 'id';
     }
 }

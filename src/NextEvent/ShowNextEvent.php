@@ -1,20 +1,17 @@
 <?php
 
-
 namespace BaclucEventPackage\NextEvent;
-
 
 use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
+use function BaclucC5Crud\Lib\collect as collect;
 use BaclucC5Crud\TableViewService;
 use BaclucC5Crud\View\ViewActionRegistry;
 use BaclucEventPackage\EventActionRegistryFactory;
 use BaclucEventPackage\NoEditIdFallbackActionProcessor;
-use function BaclucC5Crud\Lib\collect as collect;
 
-class ShowNextEvent implements NoEditIdFallbackActionProcessor
-{
+class ShowNextEvent implements NoEditIdFallbackActionProcessor {
     /**
      * @var TableViewService
      */
@@ -34,9 +31,6 @@ class ShowNextEvent implements NoEditIdFallbackActionProcessor
 
     /**
      * ShowFormActionProcessor constructor.
-     * @param TableViewService $tableViewService
-     * @param VariableSetter $variableSetter
-     * @param Renderer $renderer
      */
     public function __construct(
         TableViewService $tableViewService,
@@ -50,14 +44,11 @@ class ShowNextEvent implements NoEditIdFallbackActionProcessor
         $this->viewActionRegistry = $viewActionRegistry;
     }
 
-
-    function getName(): string
-    {
+    public function getName(): string {
         return EventActionRegistryFactory::SHOW_NEXT_EVENT;
     }
 
-    function process(array $get, array $post, ...$additionalParameters)
-    {
+    public function process(array $get, array $post, ...$additionalParameters) {
         $tableView = $this->tableViewService->getTableView(new PaginationConfiguration(0, null));
 
         $rows = $tableView->getRows();
@@ -67,16 +58,17 @@ class ShowNextEvent implements NoEditIdFallbackActionProcessor
         } else {
             $eventfound = false;
         }
-        $this->variableSetter->set("eventfound", $eventfound);
+        $this->variableSetter->set('eventfound', $eventfound);
         if ($eventfound) {
             foreach ($detailEntry as $key => $value) {
                 $this->variableSetter->set($key, $value);
             }
-            $this->variableSetter->set("eventId", array_keys($rows)[0]);
+            $this->variableSetter->set('eventId', array_keys($rows)[0]);
         }
-        $this->variableSetter->set("actions",
-            [$this->viewActionRegistry->getByName(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM)]);
-        $this->renderer->render("view/nextevent");
+        $this->variableSetter->set(
+            'actions',
+            [$this->viewActionRegistry->getByName(EventActionRegistryFactory::SHOW_CANCEL_EVENT_FORM)]
+        );
+        $this->renderer->render('view/nextevent');
     }
-
 }

@@ -1,15 +1,12 @@
 <?php
 
-
 namespace BaclucEventPackage;
-
 
 use BaclucC5Crud\Controller\DefaultRowActionConfiguration;
 use BaclucC5Crud\Controller\RowActionConfiguration;
 use BaclucC5Crud\View\ViewActionRegistry;
 
-class EventRowActionConfiguration implements RowActionConfiguration
-{
+class EventRowActionConfiguration implements RowActionConfiguration {
     /**
      * @var ViewActionRegistry
      */
@@ -27,14 +24,13 @@ class EventRowActionConfiguration implements RowActionConfiguration
         $this->defaultRowActionConfiguration = $defaultRowActionConfiguration;
     }
 
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function getActions(): array
-    {
+    public function getActions(): array {
         $viewActionDefinitions = $this->defaultRowActionConfiguration->getActions();
         $viewActionDefinitions[] = $this->viewActionRegistry->getByName(EventActionRegistryFactory::SHOW_CANCELLATIONS);
+
         return $viewActionDefinitions;
     }
 }
