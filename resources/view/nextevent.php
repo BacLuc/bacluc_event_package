@@ -35,7 +35,7 @@ if (isset($eventfound) && $eventfound) {
                 <?php foreach ($actions as $action) { ?>
                     <?php /** @var \BaclucC5Crud\View\ViewActionDefinition $action */ ?>
                     <a href="<?php echo $this->action($action->getAction())."/{$eventId}"; ?>">
-                        <button type="submit" class="btn inlinebtn actionbutton <?php echo $action->getButtonClass(); ?>"
+                        <button type="submit" class="btn inlinebtn actionbutton btn-light <?php echo $action->getButtonClass(); ?>"
                                 aria-label="<?php echo t($action->getAriaLabel()); ?>"
                                 title="<?php echo t($action->getTitle()); ?>">
                             <i class="fa <?php echo $action->getIconClass(); ?>" aria-hidden="true"> </i>
