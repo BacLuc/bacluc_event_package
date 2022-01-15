@@ -1,6 +1,6 @@
 <?php
 
-namespace BaclucEventPackage;
+namespace BaclucEventPackage\Entity;
 
 use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Lib\GetterTrait;
@@ -58,7 +58,7 @@ class Event implements Identifiable {
 
     /**
      * @var Group[]
-     * @ManyToMany(targetEntity="BaclucEventPackage\Group")
+     * @ManyToMany(targetEntity="BaclucEventPackage\Entity\Group")
      * @JoinTable(name="events_groups",
      *     joinColumns={@JoinColumn(name="eventId", referencedColumnName="id")},
      *     inverseJoinColumns={@JoinColumn(name="groupId", referencedColumnName="gID")}

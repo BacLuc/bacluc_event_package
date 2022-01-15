@@ -5,6 +5,7 @@ namespace BaclucEventPackage\NextEvent;
 use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Entity\ConfigurationSupplier;
 use BaclucC5Crud\Entity\TableViewEntrySupplier;
+use BaclucEventPackage\Entity\NextEventConfiguration;
 use function BaclucC5Crud\Lib\collect as collect;
 use BaclucEventPackage\EventRepository;
 

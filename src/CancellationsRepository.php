@@ -5,6 +5,7 @@ namespace BaclucEventPackage;
 use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Entity\OrderConfigEntry;
 use BaclucC5Crud\Entity\Repository;
+use BaclucEventPackage\Entity\EventCancellation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;

@@ -6,7 +6,7 @@
  * Time: 23:08.
  */
 
-namespace BaclucEventPackage;
+namespace BaclucEventPackage\Entity;
 
 use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Entity\WithUniqueStringRepresentation;

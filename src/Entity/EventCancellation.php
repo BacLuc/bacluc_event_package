@@ -1,6 +1,6 @@
 <?php
 
-namespace BaclucEventPackage;
+namespace BaclucEventPackage\Entity;
 
 use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Lib\GetterTrait;
@@ -40,7 +40,7 @@ class EventCancellation implements Identifiable {
 
     /**
      * @var Event
-     * @ManyToOne(targetEntity="BaclucEventPackage\Event")
+     * @ManyToOne(targetEntity="BaclucEventPackage\Entity\Event")
      * @JoinColumn(name="event_id", onDelete="CASCADE", nullable=false)
      */
     private $event;
