@@ -28,26 +28,15 @@ class Controller extends Package {
     }
 
     public function install() {
-        $em = $this->app->make(EntityManagerInterface::class);
-        //begin transaction, so when block install fails, but parent::install was successfully, you don't have to uninstall the package
-        $em->getConnection()->beginTransaction();
-
-        try {
-            $pkg = parent::install();
-            //add blocktypeset
-            if (!Set::getByHandle('bacluc_event_set')) {
-                Set::add('bacluc_event_set', 'Appointment', $pkg);
-            }
-            BlockType::installBlockType('bacluc_event_block', $pkg);
-            Set::getByHandle('bacluc_event_set')->addBlockType(BlockType::getByHandle('bacluc_event_block'));
-            BlockType::installBlockType('bacluc_next_event_block', $pkg);
-            Set::getByHandle('bacluc_event_set')->addBlockType(BlockType::getByHandle('bacluc_next_event_block'));
-            $em->getConnection()->commit();
-        } catch (Exception $e) {
-            $em->getConnection()->rollBack();
-
-            throw $e;
+        $pkg = parent::install();
+        //add blocktypeset
+        if (!Set::getByHandle('bacluc_event_set')) {
+            Set::add('bacluc_event_set', 'Appointment', $pkg);
         }
+        BlockType::installBlockType('bacluc_event_block', $pkg);
+        Set::getByHandle('bacluc_event_set')->addBlockType(BlockType::getByHandle('bacluc_event_block'));
+        BlockType::installBlockType('bacluc_next_event_block', $pkg);
+        Set::getByHandle('bacluc_event_set')->addBlockType(BlockType::getByHandle('bacluc_next_event_block'));
     }
 
     public function uninstall() {
