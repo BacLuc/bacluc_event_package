@@ -1,10 +1,10 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
         '@DoctrineAnnotation' => true,
@@ -13,4 +13,4 @@ return PhpCsFixer\Config::create()
         'php_unit_test_class_requires_covers' => false
     ])
     ->setFinder($finder)
-;
+    ;

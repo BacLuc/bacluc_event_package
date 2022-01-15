@@ -82,7 +82,7 @@ class CancellationsRepository implements Repository {
 
         try {
             return $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException $e) {
             throw new RuntimeException('Error getting count of result '.$e->getMessage());
         }
     }

@@ -14,7 +14,7 @@ use BaclucC5Crud\View\TableView\TableViewFieldConfiguration;
 use BaclucC5Crud\View\ViewActionRegistry;
 
 class ShowCancellations implements ActionProcessor {
-    const TABLE_VIEW = 'view/table';
+    public const TABLE_VIEW = 'view/table';
     /**
      * @var VariableSetter
      */

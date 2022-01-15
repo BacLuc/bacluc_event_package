@@ -16,7 +16,7 @@ use BaclucC5Crud\View\CancelFormViewAction;
 use BaclucC5Crud\View\SubmitFormViewAction;
 
 class PostCancelEventForm implements ActionProcessor {
-    const FORM_VIEW = 'view/form';
+    public const FORM_VIEW = 'view/form';
     /**
      * @var Validator
      */

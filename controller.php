@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 class Controller extends Package {
-    const PACKAGE_HANDLE = 'bacluc_event_package';
+    public const PACKAGE_HANDLE = 'bacluc_event_package';
     protected $pkgHandle = self::PACKAGE_HANDLE;
     protected $appVersionRequired = '9.0.1';
     protected $pkgVersion = '0.0.1';
