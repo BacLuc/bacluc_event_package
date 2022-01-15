@@ -4,6 +4,7 @@ namespace BaclucEventPackage;
 
 use BaclucC5Crud\Controller\ActionProcessor;
 use BaclucC5Crud\Controller\ActionRegistryFactory;
+use BaclucC5Crud\Controller\CurrentUrlSupplier;
 use BaclucC5Crud\Controller\PaginationParser;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
@@ -43,6 +44,8 @@ class ShowCancellations implements ActionProcessor {
      */
     private $paginationParser;
 
+    private CurrentUrlSupplier $currentUrlSupplier;
+
     public function __construct(
         VariableSetter $variableSetter,
         Renderer $renderer,
@@ -50,7 +53,8 @@ class ShowCancellations implements ActionProcessor {
         TableViewFieldConfiguration $tableViewFieldConfiguration,
         CancellationsRepository $cancellationsRepository,
         ViewActionRegistry $viewActionRegistry,
-        PaginationParser $paginationParser
+        PaginationParser $paginationParser,
+        CurrentUrlSupplier $currentUrlSupplier
     ) {
         $this->variableSetter = $variableSetter;
         $this->renderer = $renderer;
@@ -59,6 +63,7 @@ class ShowCancellations implements ActionProcessor {
         $this->cancellationsRepository = $cancellationsRepository;
         $this->viewActionRegistry = $viewActionRegistry;
         $this->paginationParser = $paginationParser;
+        $this->currentUrlSupplier = $currentUrlSupplier;
     }
 
     public function getName(): string {
@@ -93,6 +98,7 @@ class ShowCancellations implements ActionProcessor {
         $this->variableSetter->set('pageSize', $paginationConfiguration->getPageSize());
         $pageSizeField = new IntegerField('Entries to display', 'pageSize', $paginationConfiguration->getPageSize());
         $this->variableSetter->set('pageSizeField', $pageSizeField);
+        $this->variableSetter->set('currentURL', $this->currentUrlSupplier->getUrl());
         $this->renderer->render(self::TABLE_VIEW);
     }
 }
