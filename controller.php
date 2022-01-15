@@ -13,7 +13,7 @@ use Exception;
 class Controller extends Package {
     const PACKAGE_HANDLE = 'bacluc_event_package';
     protected $pkgHandle = self::PACKAGE_HANDLE;
-    protected $appVersionRequired = '5.7.4';
+    protected $appVersionRequired = '9.0.1';
     protected $pkgVersion = '0.0.1';
     protected $pkgAutoloaderRegistries = [
         'src' => 'BaclucEventPackage',
