@@ -1,11 +1,11 @@
 <?php
-$title = $title ?: '';
-$date_from = $date_from ?: '';
-$date_to = $date_to ?: '';
-$description = $description ?: '';
-$actions = $actions ?: [];
-$eventId = $eventId ?: [];
-$address = $address ?: '';
+$title = $title ?? '';
+$date_from = $date_from ?? '';
+$date_to = $date_to ?? '';
+$description = $description ?? '';
+$actions = $actions ?? [];
+$eventId = $eventId ?? [];
+$address = $address ?? '';
 if (isset($eventfound) && $eventfound) {
     ?>
     <div class="bacluc_event bacluc_event_next_event_block">
