@@ -5,7 +5,6 @@ namespace BaclucEventPackage\Entity;
 use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Lib\GetterTrait;
 use BaclucC5Crud\Lib\SetterTrait;
-use BaclucEventPackage\Entity\Group;
 use Doctrine\Common\Annotations\Annotation\IgnoreAnnotation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Column;
