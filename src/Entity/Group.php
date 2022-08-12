@@ -149,6 +149,24 @@ class Group implements WithUniqueStringRepresentation, Identifiable {
     private $pkgID;
 
     /**
+     * @var int
+     * @Column(type="integer", length=10, nullable=false, options={"unsigned": true, "default": 0})
+     */
+    private $gtID;
+
+    /**
+     * @var int
+     * @Column(type="integer", length=10, nullable=false, options={"unsigned": true, "default": 0})
+     */
+    private $gAuthorID;
+
+    /**
+     * @var bool
+     * @Column(type="boolean", nullable=false, options={"default": 0})
+     */
+    private $gOverrideGroupTypeSettings;
+
+    /**
      * @return string
      */
     public function __toString() {
