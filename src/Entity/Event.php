@@ -3,6 +3,7 @@
 namespace BaclucEventPackage\Entity;
 
 use BaclucC5Crud\Entity\Identifiable;
+use BaclucC5Crud\Entity\WithUniqueStringRepresentation;
 use BaclucC5Crud\Lib\GetterTrait;
 use BaclucC5Crud\Lib\SetterTrait;
 use DateTime;
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Entity
  * @Table(name="bacluc_event")
  */
-class Event implements Identifiable {
+class Event implements Identifiable, WithUniqueStringRepresentation {
     use SetterTrait;
     use GetterTrait;
 
@@ -86,5 +87,9 @@ class Event implements Identifiable {
 
     public static function getIdFieldName(): string {
         return 'id';
+    }
+
+    public function createUniqueString(): string {
+        return "{$this->id} {$this->title}";
     }
 }
