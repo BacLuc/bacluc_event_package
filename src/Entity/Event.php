@@ -22,7 +22,9 @@ use Doctrine\ORM\Mapping\Table;
  * Class Event.
  *
  * @IgnoreAnnotation("package")\n*
+ *
  * @Entity
+ *
  * @Table(name="bacluc_event")
  */
 class Event implements Identifiable, WithUniqueStringRepresentation {
@@ -31,35 +33,46 @@ class Event implements Identifiable, WithUniqueStringRepresentation {
 
     /**
      * @var int
+     *
      * @Id @Column(type="integer", nullable=false, options={"unsigned": true})
+     *
      * @GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
-     * @var DateTime
+     * @var \DateTime
+     *
      * @Column(type="datetime")
      */
     protected $date_from;
+
     /**
-     * @var DateTime
+     * @var \DateTime
+     *
      * @Column(type="datetime")
      */
     protected $date_to;
 
     /**
      * @var string
+     *
      * @Column(type="string", length=1000)
      */
     protected $title;
+
     /**
      * @var string
+     *
      * @Column(type="text")
      */
     protected $description;
 
     /**
      * @var Group[]
+     *
      * @ManyToMany(targetEntity="BaclucEventPackage\Entity\Group")
+     *
      * @JoinTable(name="events_groups",
      *     joinColumns={@JoinColumn(name="eventId", referencedColumnName="id")},
      *     inverseJoinColumns={@JoinColumn(name="groupId", referencedColumnName="gID")}
@@ -69,6 +82,7 @@ class Event implements Identifiable, WithUniqueStringRepresentation {
 
     /**
      * @var string
+     *
      * @Column(type="string")
      */
     protected $address;

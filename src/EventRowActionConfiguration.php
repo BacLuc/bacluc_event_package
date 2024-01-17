@@ -11,6 +11,7 @@ class EventRowActionConfiguration implements RowActionConfiguration {
      * @var ViewActionRegistry
      */
     private $viewActionRegistry;
+
     /**
      * @var DefaultRowActionConfiguration
      */
@@ -24,9 +25,6 @@ class EventRowActionConfiguration implements RowActionConfiguration {
         $this->defaultRowActionConfiguration = $defaultRowActionConfiguration;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getActions(): array {
         $viewActionDefinitions = $this->defaultRowActionConfiguration->getActions();
         $viewActionDefinitions[] = $this->viewActionRegistry->getByName(EventActionRegistryFactory::SHOW_CANCELLATIONS);

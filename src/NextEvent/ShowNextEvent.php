@@ -5,25 +5,29 @@ namespace BaclucEventPackage\NextEvent;
 use BaclucC5Crud\Controller\PaginationConfiguration;
 use BaclucC5Crud\Controller\Renderer;
 use BaclucC5Crud\Controller\VariableSetter;
-use function BaclucC5Crud\Lib\collect as collect;
 use BaclucC5Crud\TableViewService;
 use BaclucC5Crud\View\ViewActionRegistry;
 use BaclucEventPackage\EventActionRegistryFactory;
 use BaclucEventPackage\NoEditIdFallbackActionProcessor;
+
+use function BaclucC5Crud\Lib\collect;
 
 class ShowNextEvent implements NoEditIdFallbackActionProcessor {
     /**
      * @var TableViewService
      */
     private $tableViewService;
+
     /**
      * @var VariableSetter
      */
     private $variableSetter;
+
     /**
      * @var Renderer
      */
     private $renderer;
+
     /**
      * @var ViewActionRegistry
      */

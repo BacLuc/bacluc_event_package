@@ -18,7 +18,9 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @IgnoreAnnotation("package")
  *  Concrete\Package\BaclucC5Crud\Src
+ *
  * @Entity
+ *
  * @Table(name="NextEventConfiguration")
  */
 class NextEventConfiguration implements Identifiable {
@@ -27,7 +29,9 @@ class NextEventConfiguration implements Identifiable {
 
     /**
      * @var Group[]
+     *
      * @ManyToMany(targetEntity="BaclucEventPackage\Entity\Group")
+     *
      * @JoinTable(name="nexteventconfiguration_groups",
      *     joinColumns={@JoinColumn(name="nextEventConfigurationId", referencedColumnName="id")},
      *     inverseJoinColumns={@JoinColumn(name="groupId", referencedColumnName="gID")}
@@ -39,7 +43,9 @@ class NextEventConfiguration implements Identifiable {
      * Id of the block the configuration references.
      *
      * @var int
+     *
      * @Id
+     *
      * @Column(type="integer")
      */
     private $id;

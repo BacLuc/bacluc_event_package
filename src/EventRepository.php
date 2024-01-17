@@ -6,7 +6,6 @@ use BaclucC5Crud\Entity\Identifiable;
 use BaclucC5Crud\Entity\OrderConfigEntry;
 use BaclucC5Crud\Entity\Repository;
 use BaclucEventPackage\Entity\Event;
-use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,6 +14,7 @@ class EventRepository implements Repository {
      * @var Repository
      */
     private $standardRepository;
+
     /**
      * @var EntityManagerInterface
      */
@@ -38,9 +38,6 @@ class EventRepository implements Repository {
         return $this->standardRepository->persist($entity);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getAll(int $offset = 0, int $limit = null, array $orderEntries = []) {
         if (0 == sizeof($orderEntries)) {
             $orderEntries = [new OrderConfigEntry('date_from', false), new OrderConfigEntry('date_to', false)];
@@ -67,7 +64,7 @@ class EventRepository implements Repository {
             ->orderBy('event.date_from')
             ->setMaxResults(1)
             ->setParameter('groupIds', $groupIds)
-            ->setParameter('date', new DateTime())
+            ->setParameter('date', new \DateTime())
         ;
         $query = $qb->getQuery();
 

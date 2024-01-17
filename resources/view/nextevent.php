@@ -1,4 +1,7 @@
 <?php
+
+use BaclucC5Crud\View\ViewActionDefinition;
+
 $title = $title ?? '';
 $date_from = $date_from ?? '';
 $date_to = $date_to ?? '';
@@ -33,7 +36,7 @@ if (isset($eventfound) && $eventfound) {
         <div class="row">
             <div class="col-xs-12">
                 <?php foreach ($actions as $action) { ?>
-                    <?php /** @var \BaclucC5Crud\View\ViewActionDefinition $action */ ?>
+                    <?php /** @var ViewActionDefinition $action */ ?>
                     <a href="<?php echo $this->action($action->getAction())."/{$eventId}"; ?>">
                         <button type="submit" class="btn inlinebtn actionbutton btn-light <?php echo $action->getButtonClass(); ?>"
                                 aria-label="<?php echo t($action->getAriaLabel()); ?>"
@@ -48,10 +51,10 @@ if (isset($eventfound) && $eventfound) {
     </div>
     <?php
 } else {
-        ?>
+    ?>
     <div class="bacluc_event bacluc_event_next_event_block">
         <?php echo t('No Events found'); ?>
     </div>
     <?php
-    }
+}
 ?>

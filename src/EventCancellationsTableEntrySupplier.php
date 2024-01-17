@@ -10,6 +10,7 @@ class EventCancellationsTableEntrySupplier implements TableViewEntrySupplier {
      * @var int
      */
     private $eventId;
+
     /**
      * @var CancellationsRepository
      */

@@ -10,13 +10,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use RuntimeException;
 
 class CancellationsRepository implements Repository {
     /**
      * @var Repository
      */
     private $standardRepository;
+
     /**
      * @var EntityManagerInterface
      */
@@ -35,9 +35,6 @@ class CancellationsRepository implements Repository {
         return $this->standardRepository->persist($entity);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getAll(int $offset = 0, int $limit = null, array $orderEntries = []) {
         if (0 == sizeof($orderEntries)) {
             $orderEntries = [new OrderConfigEntry('name')];
@@ -83,8 +80,8 @@ class CancellationsRepository implements Repository {
 
         try {
             return $query->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException $e) {
-            throw new RuntimeException('Error getting count of result '.$e->getMessage());
+        } catch (NonUniqueResultException|NoResultException $e) {
+            throw new \RuntimeException('Error getting count of result '.$e->getMessage());
         }
     }
 

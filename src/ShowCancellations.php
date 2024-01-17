@@ -15,30 +15,37 @@ use BaclucC5Crud\View\ViewActionRegistry;
 
 class ShowCancellations implements ActionProcessor {
     public const TABLE_VIEW = 'view/table';
+
     /**
      * @var VariableSetter
      */
     private $variableSetter;
+
     /**
      * @var Renderer
      */
     private $renderer;
+
     /**
      * @var NoEditIdFallbackActionProcessor
      */
     private $noEditIdFallbackActionProcessor;
+
     /**
      * @var TableViewFieldConfiguration
      */
     private $tableViewFieldConfiguration;
+
     /**
      * @var CancellationsRepository
      */
     private $cancellationsRepository;
+
     /**
      * @var ViewActionRegistry
      */
     private $viewActionRegistry;
+
     /**
      * @var PaginationParser
      */

@@ -15,14 +15,17 @@ class ShowCancelEventForm implements ActionProcessor {
      * @var VariableSetter
      */
     private $variableSetter;
+
     /**
      * @var Renderer
      */
     private $renderer;
+
     /**
      * @var SubmitFormViewAction
      */
     private $submitFormAction;
+
     /**
      * @var CancelFormViewAction
      */

@@ -18,7 +18,9 @@ use Doctrine\ORM\Mapping\Table;
  * Class Event.
  *
  * @IgnoreAnnotation("package")\n*
+ *
  * @Entity
+ *
  * @Table(name="bacluc_event_cancellation")
  */
 class EventCancellation implements Identifiable {
@@ -27,20 +29,25 @@ class EventCancellation implements Identifiable {
 
     /**
      * @var int
+     *
      * @Id @Column(type="integer", nullable=false, options={"unsigned": true})
+     *
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
+     *
      * @Column(type="string", length=100)
      */
     private $name;
 
     /**
      * @var Event
+     *
      * @ManyToOne(targetEntity="BaclucEventPackage\Entity\Event")
+     *
      * @JoinColumn(name="event_id", onDelete="CASCADE", nullable=false)
      */
     private $event;

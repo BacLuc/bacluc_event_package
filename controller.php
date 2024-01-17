@@ -8,7 +8,6 @@ use Concrete\Core\Block\BlockType\BlockType;
 use Concrete\Core\Block\BlockType\Set;
 use Concrete\Core\Package\Package;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 
 class Controller extends Package {
     public const PACKAGE_HANDLE = 'bacluc_event_package';
@@ -29,7 +28,7 @@ class Controller extends Package {
 
     public function install() {
         $pkg = parent::install();
-        //add blocktypeset
+        // add blocktypeset
         if (!Set::getByHandle('bacluc_event_set')) {
             Set::add('bacluc_event_set', 'Appointment', $pkg);
         }
@@ -54,7 +53,7 @@ class Controller extends Package {
             }
             parent::uninstall();
             $em->getConnection()->commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $em->getConnection()->rollBack();
 
             throw $e;

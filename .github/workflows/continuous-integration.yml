@@ -10,11 +10,25 @@ jobs:
     name: "Lint: (php-cs-fixer)"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
 
-      - uses: actions/checkout@v2
-
-      - uses: OskarStark/php-cs-fixer-ga@3.4.0
+      - uses: shivammathur/setup-php@v2
         with:
-          args: --dry-run --diff  --config .php_cs-fixer.php .
+          php-version: '8.1.27'
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - run: composer install --no-interaction --no-plugins --no-scripts --prefer-dist --no-suggest
+
+      - run: composer cs-check
 
 

@@ -37,16 +37,15 @@ use Concrete\Core\Support\Facade\Application;
 use Concrete\Core\Support\Facade\Facade;
 use Concrete\Package\BaclucC5Crud\Controller as PackageController;
 use Concrete\Package\BaclucEventPackage\Controller as EventPackageController;
-use function DI\autowire;
 use DI\ContainerBuilder;
-use function DI\create;
 use DI\DependencyException;
-use function DI\factory;
 use DI\NotFoundException;
-use function DI\value;
-use Exception;
 use Psr\Container\ContainerInterface;
-use ReflectionException;
+
+use function DI\autowire;
+use function DI\create;
+use function DI\factory;
+use function DI\value;
 
 class Controller extends BlockController {
     use Concrete5BlockConfigController;
@@ -61,6 +60,7 @@ class Controller extends BlockController {
         $this->initializeConfig($this, [$this, 'createConfigController'], $this->bID);
 
         $app = Facade::getFacadeApplication();
+
         /** @var Localization $localisation */
         $localization = $app->make('Concrete\Core\Localization\Localization');
         $localization->setLocale('de_CH');
@@ -69,7 +69,7 @@ class Controller extends BlockController {
     /**
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function view() {
         $this->processAction($this->createCrudController()
@@ -77,24 +77,23 @@ class Controller extends BlockController {
     }
 
     /**
-     * @param $blockId
-     * @param $editId
+     * @param mixed $blockId
      *
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function action_cancel_form($blockId) {
         $this->view();
     }
 
     /**
-     * @param $blockId
-     * @param $editId
+     * @param mixed $blockId
+     * @param mixed $editId
      *
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function action_show_cancel_event_form($blockId, $editId) {
         if ($blockId != $this->bID) {
@@ -108,12 +107,12 @@ class Controller extends BlockController {
     }
 
     /**
-     * @param $blockId
-     * @param $editId
+     * @param mixed $blockId
+     * @param mixed $editId
      *
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function action_post_cancel_event_form($blockId, $editId) {
         $this->processAction(
@@ -124,7 +123,7 @@ class Controller extends BlockController {
         if (null == $this->blockViewRenderOverride) {
             Redirect::page(Page::getCurrentPage())->send();
 
-            exit();
+            exit;
         }
     }
 
@@ -153,8 +152,8 @@ class Controller extends BlockController {
     /**
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws Exception
-     * @throws ReflectionException
+     * @throws \Exception
+     * @throws \ReflectionException
      */
     private function createCrudController(): CrudController {
         $entityManager = PackageController::getEntityManagerStatic();
@@ -171,6 +170,7 @@ class Controller extends BlockController {
         );
 
         $app = Application::getFacadeApplication();
+
         /** @var PackageController $packageController */
         $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
         $containerBuilder = new ContainerBuilder();
@@ -193,8 +193,8 @@ class Controller extends BlockController {
     /**
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws Exception
-     * @throws ReflectionException
+     * @throws \Exception
+     * @throws \ReflectionException
      */
     private function createEventCancellationController(): CrudController {
         $entityManager = PackageController::getEntityManagerStatic();
@@ -219,6 +219,7 @@ class Controller extends BlockController {
         );
 
         $app = Application::getFacadeApplication();
+
         /** @var PackageController $packageController */
         $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
         $containerBuilder = new ContainerBuilder();
@@ -245,13 +246,14 @@ class Controller extends BlockController {
     /**
      * @throws DependencyException
      * @throws NotFoundException
-     * @throws Exception
+     * @throws \Exception
      */
     private function createConfigController(): CrudController {
         $entityManager = PackageController::getEntityManagerStatic();
         $entityClass = NextEventConfiguration::class;
 
         $app = Application::getFacadeApplication();
+
         /** @var PackageController $packageController */
         $packageController = $app->make(PackageService::class)->getByHandle(EventPackageController::PACKAGE_HANDLE);
 
