@@ -1,6 +1,6 @@
 {
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "3.47.1",
+    "friendsofphp/php-cs-fixer": "v3.65.0",
     "php": ">=8"
   },
   "autoload": {

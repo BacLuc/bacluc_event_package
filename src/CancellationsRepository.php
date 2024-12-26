@@ -35,7 +35,7 @@ class CancellationsRepository implements Repository {
         return $this->standardRepository->persist($entity);
     }
 
-    public function getAll(int $offset = 0, int $limit = null, array $orderEntries = []) {
+    public function getAll(int $offset = 0, ?int $limit = null, array $orderEntries = []) {
         if (0 == sizeof($orderEntries)) {
             $orderEntries = [new OrderConfigEntry('name')];
         }
